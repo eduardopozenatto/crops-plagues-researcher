@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/venv/
+backend/__pycache__/
+*.pyc
+
+# Next.js Build Output
+.next/
+frontend/.next/
+frontend/out/
+
+# Environment Variables & Secret Keys
+.env
+.env.local
+.env.development.local
+.env.production.local
+backend/.env
+frontend/.env
+
+# Local Databases & Logs
+*.db
+*.db-journal
+frontend/prisma/dev.db
+frontend/prisma/dev.db-journal
+*.log
+
+# Operating System & IDE Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
