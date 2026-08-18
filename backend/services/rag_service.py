@@ -66,6 +66,176 @@ AGRONOMIC_KNOWLEDGE_BASE: Dict[str, List[Dict[str, str]]] = {
             "sourceUrl": "https://www.embrapa.br/arroz-e-feijao/doencas"
         }
     ],
+    "tomate": [
+        {
+            "pestName": "Requeima-do-Tomateiro (Phytophthora infestans)",
+            "description": "Doença fúngica mais devastadora da cultura do tomateiro tutorado e rasteiro sob clima frio e úmido.",
+            "impactData": "Manchas foliares encharcadas de rápida expansão que queimam toda a folhagem e apodrecem os frutos verdes e maduros.",
+            "controlMethods": "Aplicação preventiva de fungicidas ditiocarbamatos e cúpricos, tutoriação adequada para arejamento e estufas com filme UV.",
+            "agriculturalImplements": "Pulverizador tratorizado de barras verticais para Tomate tutorado e pulverizador costal motorizado.",
+            "sourceUrl": "https://www.embrapa.br/hortalicas/tomate/doencas"
+        },
+        {
+            "pestName": "Traça-do-Tomateiro (Tuta absoluta)",
+            "description": "Microlepidóptero cujas lagartas minam as folhas, caules e broqueiam os frutos de tomate.",
+            "impactData": "Minas transparentes nas folhas e furos de entrada nos frutos de tomate, tornando-os impróprios para o consumo e indústria.",
+            "controlMethods": "Armadilhas de feromônio sexual para monitoramento de machos, controle biológico com Trichogramma e inseticidas microbiológicos.",
+            "agriculturalImplements": "Armadilhas de feromônio e pulverizador costal de alta pressão.",
+            "sourceUrl": "https://www.embrapa.br/hortalicas/tomate/pragas"
+        },
+        {
+            "pestName": "Mosca-Branca e Geminivírus (Bemisia tabaci)",
+            "description": "Inseto vetor que transmite vírus do gênero Begomovirus ao tomateiro.",
+            "impactData": "Mosaico dourado, deformação foliar e paralisação do crescimento da planta com frutos de amadurecimento desuniforme.",
+            "controlMethods": "Uso de telas anti-afídeos nas mudas, mulching prateado refletivo no solo e rotação de inseticidas de ação sistêmica.",
+            "agriculturalImplements": "Estufa com tela de malha fina anti-inseto e mulching plástico refletivo.",
+            "sourceUrl": "https://www.embrapa.br/hortalicas/tomate/pragas"
+        },
+        {
+            "pestName": "Pinta-Preta do Tomateiro (Alternaria solani)",
+            "description": "Fungo foliar comum sob temperaturas elevadas e alternância de umidade no tomateiro.",
+            "impactData": "Manchas pretas circulares com anéis concêntricos nas folhas inferiores, desfolhando a planta de baixo para cima.",
+            "controlMethods": "Destruição de restos culturais, rotação de culturas e pulverizações foliares com mancozeb ou azoxistrobina.",
+            "agriculturalImplements": "Pulverizador de barras verticais tutoradas.",
+            "sourceUrl": "https://www.embrapa.br/hortalicas/tomate/doencas"
+        }
+    ],
+    "milho": [
+        {
+            "pestName": "Lagarta-do-cartucho (Spodoptera frugiperda)",
+            "description": "Praga-chave da cultura do milho no Brasil. Alimenta-se das folhas jovens no cartucho e reduz severamente a área fotossintética.",
+            "impactData": "Cartuchos destruídos com acúmulo de fezes raspadas e perfurações, reduzindo o rendimento em até 60%.",
+            "controlMethods": "Tecnologia de milho Bt, liberação de parasitóides Trichogramma e aplicação foliar de inseticidas específicos.",
+            "agriculturalImplements": "Pulverizador autopropelido com assistente de ar e bicos leque duplo ajustados para o cartucho.",
+            "sourceUrl": "https://www.embrapa.br/milho-e-sorgo/cultivos/milho/pragas"
+        },
+        {
+            "pestName": "Cigarrinha-do-milho (Dalbulus maidis)",
+            "description": "Inseto sugador vetor dos molicutes do enfezamento pálido, enfezamento vermelho e vírus do riscado.",
+            "impactData": "Estriamento amarelado e avermelhado nas folhas, nanismo e abortamento de espigas com perdas de até 90%.",
+            "controlMethods": "Eliminação de milho tiguera, vazio sanitário, tratamento de sementes e inseticidas sistêmicos.",
+            "agriculturalImplements": "Semeadora com tratamento industrial de sementes e pulverizador tratorizado de barras.",
+            "sourceUrl": "https://www.embrapa.br/milho-e-sorgo/cultivos/milho/pragas"
+        },
+        {
+            "pestName": "Mancha-de-turcicum (Exserohilum turcicum)",
+            "description": "Doença fúngica foliar favorecida por temperaturas amenas e alta umidade relativa no milharal.",
+            "impactData": "Lesões elípticas grandes de cor cinza a castanha que queimam a folha inteira antes da colheita.",
+            "controlMethods": "Uso de híbridos resistentes e aplicação foliar de triazóis + estrobirulinas na pré-florada.",
+            "agriculturalImplements": "Pulverizador autopropelido de alto rendimento com regulador de vazão.",
+            "sourceUrl": "https://www.embrapa.br/milho-e-sorgo/cultivos/milho/doencas"
+        },
+        {
+            "pestName": "Podridão-do-gomo e da-base do colmo (Fusarium verticillioides)",
+            "description": "Complexo fúngico que coloniza as raízes e a base do colmo de plantas de milho sob estresse hídrico ou nutricional.",
+            "impactData": "Escurecimento interno do colmo, acamamento das plantas próximo à colheita e grãos ardidos na espiga.",
+            "controlMethods": "Rotação de culturas com dicotiledôneas, adubação potássica equilibrada e híbridos com colmo resistente.",
+            "agriculturalImplements": "Colhedora de milho com plataforma de colheita ajustada para plantas acamadas.",
+            "sourceUrl": "https://www.embrapa.br/milho-e-sorgo/cultivos/milho/doencas"
+        }
+    ],
+    "soja": [
+        {
+            "pestName": "Ferrugem-asiática da Soja (Phakopsora pachyrhizi)",
+            "description": "A doença fúngica mais severa e destrutiva da cultura da soja no Brasil, capaz de desfolhar a lavoura em poucos dias.",
+            "impactData": "Pústulas amarronzadas na face inferior das folhas, desfolha precoce acelerada e perdas de até 80% no enchimento de grãos.",
+            "controlMethods": "Vazio sanitário rigoroso, monitoramento no Consórcio Antiferrugem, cultivares de ciclo curto e fungicidas multissítios associados a triazóis/carboxamidas.",
+            "agriculturalImplements": "Pulverizador autopropelido de barras com assistente de ar e bicos de gotas finas de alta penetração.",
+            "sourceUrl": "https://www.embrapa.br/soja/cultivos/soja/doencas"
+        },
+        {
+            "pestName": "Percevejo-marrom (Euschistus heros)",
+            "description": "Praga sugadora responsável pelos maiores prejuízos de qualidade e peso nos grãos de soja no cerrado brasileiro.",
+            "impactData": "Sucção direta das vagens e grãos em formação, provocando retenção foliar (soja louca) e sementes chocas e inviáveis.",
+            "controlMethods": "Amostragem com pano de batida, controle biológico com parasitóides de ovos (Telenomus podisi) e inseticidas neonicotinóides + piroides.",
+            "agriculturalImplements": "Pano de batida de 1 metro e pulverizador hidráulico tratorizado.",
+            "sourceUrl": "https://www.embrapa.br/soja/cultivos/soja/pragas"
+        },
+        {
+            "pestName": "Lagarta-falsa-medideira (Chrysodeixis includens)",
+            "description": "Lagarta desfolhadora com movimento característico de 'medir palmos' que consome o limbo foliar da soja.",
+            "impactData": "Desfolha com aspecto rendilhado (preservando as nervuras principais), reduzindo a capacidade fotossintética da planta.",
+            "controlMethods": "Variedades de soja Intacta (Bt), bioinseticidas à base de Bacillus thuringiensis e liberação de Trichogramma pretiosum.",
+            "agriculturalImplements": "Pano de batida agronômico e pulverizador autopropelido de barras.",
+            "sourceUrl": "https://www.embrapa.br/soja/cultivos/soja/pragas"
+        },
+        {
+            "pestName": "Mancha-alvo (Corynespora cassiicola)",
+            "description": "Doença fúngica em expansão na soja devido ao cultivo continuado sob palhada e chuvas frequentes.",
+            "impactData": "Lesões circulares com halo amarelado e ponto central escuro (alvo) provocando queda prematura das folhas do terço inferior.",
+            "controlMethods": "Rotação de culturas com gramíneas, uso de cultivares tolerantes e aplicação preventiva de fungicidas carboxamidas.",
+            "agriculturalImplements": "Pulverizador tratorizado de barras com bicos leque duplo de penetração no baixeiro.",
+            "sourceUrl": "https://www.embrapa.br/soja/cultivos/soja/doencas"
+        }
+    ],
+    "cafe": [
+        {
+            "pestName": "Ferrugem-do-cafeeiro (Hemileia vastatrix)",
+            "description": "A principal doença fúngica da cafeicultura mundial, infectando a face inferior das folhas de café.",
+            "impactData": "Pústulas alaranjadas na face inferior foliar que causam desfolha intensa, seca de ramos produtivos e bienalidade negativa.",
+            "controlMethods": "Cultivares resistentes (Catucaí, Arara, Iatu), adubação foliar com cobre fixo e fungicidas sistêmicos (triazóis/estrobirulinas) via solo e folha.",
+            "agriculturalImplements": "Trator cafeeiro de bitola estreita com turbo-atomizador acoplado de jato direcionado.",
+            "sourceUrl": "https://www.embrapa.br/cafe/doencas"
+        },
+        {
+            "pestName": "Broca-do-café (Hypothenemus hampei)",
+            "description": "Pequeno besouro que perfura os frutos de café na região da coroa e deposita ovos no interior das sementes.",
+            "impactData": "Grãos perfurados e destruídos internamente, reduzindo a classificação do lote na mesa de degustação e o peso da saca.",
+            "controlMethods": "Colheita bem feita ('repasse' de frutos remanescentes no pé e solo), controle biológico com fungo Beauveria bassiana e inseticidas específicos.",
+            "agriculturalImplements": "Colhedora automotriz de café ou derriçadeira portátil e pulverizador tratorizado cafeeiro.",
+            "sourceUrl": "https://www.embrapa.br/cafe/pragas"
+        },
+        {
+            "pestName": "Bicho-mineiro-do-cafeeiro (Leucoptera coffeella)",
+            "description": "Microlepidóptero cujas lagartas escavam minas necróticas no parênquima foliar do café sob clima quente e seco.",
+            "impactData": "Minas secas arredondadas nas folhas do terço superior, provocando forte desfolhamento e queimadura dos frutos pelo sol.",
+            "controlMethods": "Preservação de inimigos naturais (vespas predadoras), monitoramento de minas ativas e aplicação de inseticidas neonicotinoides sistêmicos.",
+            "agriculturalImplements": "Sulcador dosador de defensivos via solo e atomizador turbinado de ar ajustável.",
+            "sourceUrl": "https://www.embrapa.br/cafe/pragas"
+        },
+        {
+            "pestName": "Cercosporiose / Mancha-de-olho-pardo (Cercospora coffeicola)",
+            "description": "Fungo foliar e de fruto que ataca lavouras de café sob estresse nutricional ou exposição solar excessiva.",
+            "impactData": "Manchas circulares marrons com centro claro em folhas e frutos, causando despolpamento deficiente e perda de qualidade no grão.",
+            "controlMethods": "Adubação nitrogenada e potássica bem dosada, sombreamento parcial e pulverizações com fungicidas cúpricos e estrobirulinas.",
+            "agriculturalImplements": "Adubadora tratorizada de precisão para cafezal e turbo-atomizador de barras laterais.",
+            "sourceUrl": "https://www.embrapa.br/cafe/doencas"
+        }
+    ],
+    "algodao": [
+        {
+            "pestName": "Bicudo-do-algodeiro (Anthonomus grandis)",
+            "description": "A praga mais destrutiva da cultura do algodão na América Latina. O besouro perfura botões florais e maçãs para alimentação e postura.",
+            "impactData": "Queda massiva de botões florais (furo de postura com 'lágrima' de cera) e destruição das plumas nas maçãs, com perdas de até 100%.",
+            "controlMethods": "Vazio sanitário estrito com destruição de restos culturais (soqueiras), tubos mata-bicudo no perímetro e pulverizações químicas massivas após amostragem.",
+            "agriculturalImplements": "Triturador de soqueiras de algodão acoplado ao trator e pulverizador autopropelido de alto rendimento.",
+            "sourceUrl": "https://www.embrapa.br/algodao/pragas"
+        },
+        {
+            "pestName": "Ramulária do Algodeiro (Ramularia areola)",
+            "description": "Principal doença fúngica foliar do algodoeiro no cerrado brasileiro, favorecida por alta umidade no baixeiro.",
+            "impactData": "Manchas angulares azuladas a esbranquiçadas na face inferior das folhas, causando desfolha precoce de baixo para cima.",
+            "controlMethods": "Cultivares resistentes, espaçamento entre fileiras ajustado e programa rotacionado de fungicidas triazóis, estrobirulinas e carboxamidas.",
+            "agriculturalImplements": "Pulverizador autopropelido com assistente de ar e barras de alto alcance.",
+            "sourceUrl": "https://www.embrapa.br/algodao/doencas"
+        },
+        {
+            "pestName": "Lagarta-das-maçãs (Helicoverpa armigera)",
+            "description": "Praga polífaga altamente voraz que broqueia os botões florais, maçãs e capulhos de algodão.",
+            "impactData": "Perfuração e podridão das maçãs de algodão com destruição direta das fibras e sementes internas.",
+            "controlMethods": "Manejo Integrado de Pragas (MIP), algodão Bt (Bollgard), liberação de Trichogramma e inseticidas biológicos (Baculovirus).",
+            "agriculturalImplements": "Pano de batida para amostragem no algodoeiro e pulverizador de barras.",
+            "sourceUrl": "https://www.embrapa.br/algodao/pragas"
+        },
+        {
+            "pestName": "Mancha-de-stemphylium (Stemphylium solani)",
+            "description": "Doença foliar associada à deficiência severa de potássio durante a fase de enchimento de maçãs do algodoeiro.",
+            "impactData": "Manchas circulares avermelhadas que evoluem para necrose centro-claro com desfolhamento fulminante das plantas.",
+            "controlMethods": "Correção de potássio no solo, adubação de cobertura bem dosada e fungicidas protetores foliares.",
+            "agriculturalImplements": "Adubadora de cobertura tratorizada e pulverizador de barras.",
+            "sourceUrl": "https://www.embrapa.br/algodao/doencas"
+        }
+    ],
     "arroz": [
         {
             "pestName": "Bruzone do Arroz (Pyricularia oryzae)",
@@ -201,40 +371,6 @@ AGRONOMIC_KNOWLEDGE_BASE: Dict[str, List[Dict[str, str]]] = {
             "agriculturalImplements": "Serrote agronômico curva e pincel de selamento foliar.",
             "sourceUrl": "https://www.ceplac.gov.br"
         }
-    ],
-    "tomate": [
-        {
-            "pestName": "Requeima-do-Tomateiro (Phytophthora infestans)",
-            "description": "Doença fúngica mais devastadora da cultura do tomateiro tutorado e rasteiro sob clima frio e úmido.",
-            "impactData": "Manchas foliares encharcadas de rápida expansão que queimam toda a folhagem e apodrecem os frutos verdes e maduros.",
-            "controlMethods": "Aplicação preventiva de fungicidas ditiocarbamatos e cúpricos, tutoriação adequada para arejamento e estufas com filme UV.",
-            "agriculturalImplements": "Pulverizador tratorizado de barras verticais para Tomate tutorado e pulverizador costal motorizado.",
-            "sourceUrl": "https://www.embrapa.br/hortalicas/tomate/doencas"
-        },
-        {
-            "pestName": "Traça-do-Tomateiro (Tuta absoluta)",
-            "description": "Microlepidóptero cujas lagartas minam as folhas, caules e broqueiam os frutos de tomate.",
-            "impactData": "Minas transparentes nas folhas e furos de entrada nos frutos de tomate, tornando-os impróprios para o consumo e indústria.",
-            "controlMethods": "Armadilhas de feromônio sexual para monitoramento de machos, controle biológico com Trichogramma e inseticidas microbiológicos.",
-            "agriculturalImplements": "Armadilhas de feromônio e pulverizador costal de alta pressão.",
-            "sourceUrl": "https://www.embrapa.br/hortalicas/tomate/pragas"
-        },
-        {
-            "pestName": "Mosca-Branca e Geminivírus (Bemisia tabaci)",
-            "description": "Inseto vetor que transmite vírus do gênero Begomovirus ao tomateiro.",
-            "impactData": "Mosaico dourado, deformação foliar e paralisação do crescimento da planta com frutos de amadurecimento desuniforme.",
-            "controlMethods": "Uso de telas anti-afídeos nas mudas, mulching prateado refletivo no solo e rotação de inseticidas de ação sistêmica.",
-            "agriculturalImplements": "Estufa com tela de malha fina anti-inseto e mulching plástico refletivo.",
-            "sourceUrl": "https://www.embrapa.br/hortalicas/tomate/pragas"
-        },
-        {
-            "pestName": "Pinta-Preta do Tomateiro (Alternaria solani)",
-            "description": "Fungo foliar comum sob temperaturas elevadas e alternância de umidade no tomateiro.",
-            "impactData": "Manchas pretas circulares com anéis concêntricos nas folhas inferiores, desfolhando a planta de baixo para cima.",
-            "controlMethods": "Destruição de restos culturais, rotação de culturas e pulverizações foliares com mancozeb ou azoxistrobina.",
-            "agriculturalImplements": "Pulverizador de barras verticais tutoradas.",
-            "sourceUrl": "https://www.embrapa.br/hortalicas/tomate/doencas"
-        }
     ]
 }
 
@@ -343,7 +479,7 @@ Return ONLY a strict JSON object:
         }
         try:
             logger.info(f"Chamando Gemini REST modelo: {m} para cultura '{crop_name}'")
-            with httpx.Client(timeout=httpx.Timeout(15.0, connect=5.0)) as client:
+            with httpx.Client(timeout=httpx.Timeout(20.0, connect=5.0)) as client:
                 res = client.post(url, headers=headers, json=payload)
                 if res.status_code == 200:
                     data = res.json()
