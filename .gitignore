@@ -5,7 +5,9 @@ backend/venv/
 backend/__pycache__/
 *.pyc
 
-# Next.js Build Output
+# Build Output
+dist/
+frontend/dist/
 .next/
 frontend/.next/
 frontend/out/
