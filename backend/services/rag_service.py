@@ -310,7 +310,7 @@ Sua resposta DEVE ser um objeto JSON estrito com a chave principal "pests":
 
     if HAS_GOOGLE_GENAI_SDK:
         try:
-            client = genai.Client(api_key=api_key, http_options={"timeout": 10.0})
+            client = genai.Client(api_key=api_key, http_options={"timeout": 20.0})
             for m in models_to_try:
                 try:
                     logger.info(f"Chamando Gemini Direto via SDK: {m}")
@@ -358,7 +358,7 @@ Sua resposta DEVE ser um objeto JSON estrito com a chave principal "pests":
             }
         }
         try:
-            with httpx.Client(timeout=httpx.Timeout(8.0, connect=4.0)) as client:
+            with httpx.Client(timeout=httpx.Timeout(20.0, connect=5.0)) as client:
                 res = client.post(url, headers=headers, json=payload)
                 if res.status_code == 200:
                     data = res.json()
