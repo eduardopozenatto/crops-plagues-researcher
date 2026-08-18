@@ -1,23 +1,23 @@
 # 🏗️ Arquitetura do Sistema — Radar Agrícola IA
 
-> **Versão**: 2.3.0 Minimalist (Vite + React 19 + Abas em Cards + Visão em Tabela + Drawer Retrátil)  
+> **Versão**: 2.3.0 Minimalist Cloud Ready (Vite + React 19 + Vercel + Render + Abas em Cards + Visão em Tabela + Drawer Retrátil)  
 > **Última Atualização**: 18/08/2026
 
 ---
 
 ## 📌 1. Visão Geral da Arquitetura Híbrida
 
-O **Radar Agrícola IA** utiliza uma arquitetura desacoplada de alto desempenho baseada no empacotador **Vite (React 19)** no frontend e motor **FastAPI Python** no backend, oferecendo respostas em **0ms** para 50+ culturas agrícolas e tempo de inicialização dev de **180ms** (100% livre de erros `SIGBUS`).
+O **Radar Agrícola IA** utiliza uma arquitetura desacoplada de alto desempenho baseada no empacotador **Vite (React 19)** no frontend e motor **FastAPI Python** no backend, oferecendo respostas em **0ms** para 50+ culturas agrícolas e integração fluida entre **Vercel** (Frontend) e **Render** (Backend).
 
 ```mermaid
 graph TD
-    User[Usuário / Apresentação Feira] --> UI[Portal Web Vite + React 19]
+    User[Usuário / Apresentação Feira] --> UI[Vercel: Portal Web Vite + React 19]
+    UI -- VITE_BACKEND_URL --> Backend[Render: Motor FastAPI Python - Porta 8000/Cloud]
     UI --> Cards[Visão Cards com Abas / Tabela Comparativa]
     UI --> Drawer[Slide-over Drawer de Histórico]
-    UI --> Backend[Motor FastAPI Python - Porta 8000]
     Backend --> Base[Base Curada Embrapa 50+ Culturas (0ms)]
     Base -- Encontrado --> UI
-    Backend -- Não Cadastrado --> Gemini[Gemini 3.5 Flash Direto (<1.5s)]
+    Backend -- Não Cadastrado --> Gemini[Gemini 3.5/2.5 Flash Direto (<1.5s)]
     Gemini --> UI
 ```
 
@@ -27,6 +27,7 @@ graph TD
 
 ### 🎨 Frontend (Vite + React 19)
 - **Tecnologias**: Vite 6, React 19, TypeScript 5, Tailwind CSS v3, Lucide Icons.
+- **Integração de Nuvem**: Leitura dinâmica de `import.meta.env.VITE_BACKEND_URL` com fallback para `http://localhost:8000`.
 - **Responsabilidades**:
   - Renderizar o dashboard minimalista em Dark Graphite (`#090d0b`).
   - Exibir a busca centralizada com atalhos de acesso rápido a culturas.
@@ -35,8 +36,8 @@ graph TD
   - Gerenciar o **Slide-over Drawer de Histórico Retrátil** com multisseleção e busca.
 
 ### 🐍 Backend (FastAPI Python 3.10)
-- **Tecnologias**: FastAPI, Uvicorn, Google Gemini API (`google-genai` SDK), Pydantic v2, `httpx`.
+- **Tecnologias**: FastAPI, Uvicorn, Google Gemini API (`google-genai` SDK), Pydantic v2, `httpx`, `python-dotenv`.
 - **Responsabilidades**:
   - Manter a base curada `AGRONOMIC_KNOWLEDGE_BASE` cobrindo 50+ culturas agrícolas brasileiras em **0ms**.
-  - Acionar o Gemini 3.5 Flash de forma direta com schemas Pydantic JSON estritos.
+  - Acionar o Gemini API de forma direta com schemas Pydantic JSON estritos e timeout de 20s.
   - Executar a recusa educada de entradas não agrícolas (ex: "Cadeira", "Windows").
