@@ -15,7 +15,7 @@ logger = logging.getLogger("backend_main")
 app = FastAPI(
     title="Radar Agrícola IA - API Backend",
     description="Motor de Inteligência Fitossanitária Híbrido (Alternativa C)",
-    version="2.2.0"
+    version="2.3.0"
 )
 
 app.add_middleware(
@@ -53,4 +53,5 @@ def search_crop(request: CropSearchRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
