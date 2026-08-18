@@ -19,7 +19,8 @@ import {
   History,
   X,
   RefreshCw,
-  Zap
+  Zap,
+  CornerDownLeft
 } from 'lucide-react';
 import { getCropImageUrl } from '@/lib/cropImages';
 
@@ -124,7 +125,6 @@ export default function App() {
     }));
 
     setSavedRecords((prev) => {
-      // Remove entradas antigas da mesma cultura para evitar duplicatas acumuladas
       const filtered = prev.filter(
         (item) => item.cropName.toLowerCase() !== cropResult.cropName.toLowerCase()
       );
@@ -166,7 +166,7 @@ export default function App() {
           initialTabs[pIdx] = 'description';
         });
         setActiveTabs(initialTabs);
-        return; // Retorna instantaneamente sem requisitar a rede!
+        return;
       }
     }
 
@@ -265,29 +265,29 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#090d0b] text-slate-100 font-sans selection:bg-emerald-500 selection:text-black">
       {/* Glow Fundo sutil */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_-10%,rgba(16,185,129,0.12),rgba(0,0,0,0))] pointer-events-none z-0" />
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_-10%,rgba(16,185,129,0.14),rgba(0,0,0,0))] pointer-events-none z-0" />
 
-      {/* Header Minimalista Slim */}
-      <header className="sticky top-0 z-40 w-full border-b border-emerald-950/80 bg-[#090d0b]/90 backdrop-blur-lg">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-700 flex items-center justify-center shadow-md">
-              <Sprout className="h-5 w-5 text-black stroke-[2.5]" />
+      {/* Header Minimalista Slim (100% Responsivo) */}
+      <header className="sticky top-0 z-40 w-full border-b border-emerald-950/80 bg-[#090d0b]/90 backdrop-blur-xl">
+        <div className="max-w-6xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-700 flex items-center justify-center shadow-md shadow-emerald-950/50 flex-shrink-0">
+              <Sprout className="h-4 sm:h-5 w-4 sm:w-5 text-black stroke-[2.5]" />
             </div>
-            <div>
-              <h1 className="text-sm font-bold tracking-tight text-white flex items-center gap-2">
-                Radar Agrícola IA
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
-                  v2.3.0 Minimalist
+            <div className="truncate">
+              <h1 className="text-xs sm:text-sm font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
+                <span>Radar Agrícola IA</span>
+                <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                  v2.4.0
                 </span>
               </h1>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
             <button
               onClick={() => setIsDrawerOpen(true)}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 transition-colors"
+              className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800/80 text-xs font-medium text-slate-300 transition-colors"
             >
               <History className="h-3.5 w-3.5 text-emerald-400" />
               <span>Histórico ({savedRecords.length})</span>
@@ -295,44 +295,44 @@ export default function App() {
 
             <button
               onClick={() => setActiveModal('about')}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 transition-colors"
+              className="inline-flex items-center space-x-1 px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800/80 text-xs font-medium text-slate-300 transition-colors"
             >
               <Info className="h-3.5 w-3.5 text-emerald-400" />
               <span className="hidden sm:inline">Sobre</span>
             </button>
 
-            <div className="hidden sm:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-950/30 border border-emerald-800/30 text-[11px] text-emerald-400 font-medium">
+            <div className="hidden xs:inline-flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-emerald-950/30 border border-emerald-800/30 text-[11px] text-emerald-400 font-medium">
               <span className={`h-2 w-2 rounded-full ${backendOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-              <span>{backendOnline ? 'FastAPI Online' : 'Modo Offline'}</span>
+              <span className="hidden md:inline">{backendOnline ? 'FastAPI Online' : 'Modo Offline'}</span>
             </div>
           </div>
         </div>
       </header>
 
       {/* Conteúdo Principal Minimalista */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 relative z-10 space-y-8">
+      <main className="max-w-6xl mx-auto px-3 sm:px-6 py-6 sm:py-8 relative z-10 space-y-6 sm:space-y-8">
         
-        {/* HERO SEARCH AREA (Centro Focal da Aplicação) */}
-        <section className="text-center max-w-2xl mx-auto space-y-4 pt-4">
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+        {/* HERO SEARCH AREA (Centro Focal de Busca Estilo Motor IA) */}
+        <section className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4 pt-2 sm:pt-4">
+          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] sm:text-xs font-medium">
             <Sparkles className="h-3.5 w-3.5" />
-            <span>Engenharia Fitossanitária & Manejo de Lavoras (Embrapa & IA)</span>
+            <span>Pesquisa Fitossanitária Inteligente (Embrapa & Gemini IA)</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
             Diagnóstico Agronômico Instantâneo
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-            Informe a planta semeada para obter foto em HD, pragas características, sintomas, manejo MIP e equipamentos.
+          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed px-2">
+            Pesquise a lavoura semeada para visualizar fotos em HD, pragas características, sintomas, manejo MIP e equipamentos.
           </p>
 
-          {/* Form de Busca Minimalista */}
+          {/* Form de Busca Responsivo (Opção 1-A: Botão 100% largura no Mobile, Lado a lado no Desktop) */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
               handleSearch();
             }}
-            className="flex gap-2 pt-2"
+            className="flex flex-col sm:flex-row gap-2 pt-2"
           >
             <div className="relative flex-1">
               <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-500" />
@@ -340,15 +340,19 @@ export default function App() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Qual cultura deseja pesquisar? (ex: Feijão, Tomate, Soja, Cacau)..."
-                className="w-full pl-10 pr-4 py-3 bg-slate-950/90 border border-slate-800 rounded-xl text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/80 focus:border-transparent transition-all shadow-inner"
+                placeholder="Qual cultura deseja pesquisar? (ex: Feijão, Tomate, Cacau)..."
+                className="w-full pl-10 pr-12 sm:pr-16 py-3.5 bg-slate-950/90 border border-slate-800 rounded-xl text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/80 focus:border-transparent transition-all shadow-inner"
               />
+              <span className="hidden sm:inline-flex absolute right-3 top-3 px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-slate-500 font-mono items-center gap-0.5">
+                <span>Enter</span>
+                <CornerDownLeft className="h-2.5 w-2.5" />
+              </span>
             </div>
 
             <button
               type="submit"
               disabled={loading || !query.trim()}
-              className="px-5 py-3 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-black font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-emerald-950 flex items-center justify-center space-x-1.5 flex-shrink-0"
+              className="w-full sm:w-auto px-6 py-3.5 min-h-[44px] bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-black font-bold text-xs sm:text-sm rounded-xl transition-all shadow-lg shadow-emerald-950/60 flex items-center justify-center space-x-2 flex-shrink-0 cursor-pointer"
             >
               {loading ? (
                 <span className="animate-spin font-bold">⏳</span>
@@ -359,7 +363,7 @@ export default function App() {
             </button>
           </form>
 
-          {/* Chips de Culturas Populares */}
+          {/* Chips de Culturas Populares em Grade Responsiva (Opção 2-B) */}
           <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2">
             <span className="text-[11px] text-slate-500 font-medium mr-1">Atalhos rápidos:</span>
             {popularCrops.map((c) => (
@@ -370,7 +374,7 @@ export default function App() {
                   setQuery(c.name);
                   handleSearch(c.name);
                 }}
-                className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-slate-900/60 hover:bg-emerald-950/60 border border-slate-800/80 hover:border-emerald-700/50 text-xs font-medium text-slate-300 hover:text-emerald-300 transition-colors"
+                className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-slate-900/70 hover:bg-emerald-950/70 border border-slate-800/80 hover:border-emerald-700/50 text-[11px] sm:text-xs font-medium text-slate-300 hover:text-emerald-300 transition-colors"
               >
                 <span>{c.icon}</span>
                 <span>{c.name}</span>
@@ -381,28 +385,28 @@ export default function App() {
 
         {/* Indicator de Loading */}
         {loading && (
-          <div className="glass-panel p-8 rounded-2xl border border-emerald-500/30 text-center space-y-3 max-w-md mx-auto animate-pulse">
+          <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-emerald-500/30 text-center space-y-3 max-w-md mx-auto animate-pulse">
             <div className="inline-flex items-center justify-center p-3 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
               <Sprout className="h-6 w-6 animate-spin" />
             </div>
-            <h3 className="text-sm font-bold text-white">Processando Diagnóstico Agronômico...</h3>
+            <h3 className="text-xs sm:text-sm font-bold text-white">Processando Diagnóstico Agronômico...</h3>
             <p className="text-xs text-emerald-400 font-medium">{loadingStep}</p>
           </div>
         )}
 
         {/* PAINEL DE RESULTADOS (HERO BANNER + MODOS DE VISÃO) */}
         {searchResult && !loading && (
-          <section className="space-y-6 animate-fadeIn">
+          <section className="space-y-4 sm:space-y-6 animate-fadeIn">
             
             {/* Indicador Cache-First + Botão de Forçar Atualização via IA */}
             <div className="flex flex-wrap items-center justify-between gap-2 px-1">
               {searchResult.isFromCache ? (
-                <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+                <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] sm:text-xs font-medium">
                   <Zap className="h-3.5 w-3.5 text-emerald-400 fill-emerald-400/20" />
                   <span>Carregado do Histórico Local (0ms)</span>
                 </div>
               ) : (
-                <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300 text-xs font-medium">
+                <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300 text-[11px] sm:text-xs font-medium">
                   <Sparkles className="h-3.5 w-3.5 text-teal-300" />
                   <span>Diagnóstico via IA (Gemini Engine)</span>
                 </div>
@@ -412,15 +416,15 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => handleSearch(searchResult.cropName, true)}
-                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-emerald-300 transition-all shadow-sm"
+                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-[11px] sm:text-xs font-medium text-slate-300 hover:text-emerald-300 transition-all shadow-sm"
               >
                 <RefreshCw className="h-3 w-3 text-emerald-400" />
                 <span>Atualizar via IA</span>
               </button>
             </div>
 
-            {/* Hero Banner Visual de Destaque */}
-            <div className="relative rounded-2xl overflow-hidden border border-emerald-800/40 shadow-xl h-44 sm:h-56 flex items-end">
+            {/* Hero Banner Visual de Destaque Responsivo */}
+            <div className="relative rounded-2xl overflow-hidden border border-emerald-800/40 shadow-xl h-36 sm:h-56 flex items-end">
               <img
                 src={getCropImageUrl(searchResult.cropName)}
                 alt={searchResult.cropName}
@@ -428,16 +432,16 @@ export default function App() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#090d0b] via-[#090d0b]/70 to-transparent" />
 
-              <div className="relative z-10 p-5 sm:p-6 w-full flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3">
+              <div className="relative z-10 p-4 sm:p-6 w-full flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 sm:gap-3">
                 <div>
-                  <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold mb-1">
+                  <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-[10px] sm:text-[11px] font-semibold mb-0.5">
                     <ImageIcon className="h-3 w-3" />
                     <span>Fotografia Agronômica HD</span>
                   </div>
-                  <h3 className="text-2xl sm:text-4xl font-extrabold text-white capitalize drop-shadow">
+                  <h3 className="text-xl sm:text-4xl font-extrabold text-white capitalize drop-shadow">
                     {searchResult.cropName}
                   </h3>
-                  <p className="text-slate-300 text-xs mt-0.5">
+                  <p className="text-slate-300 text-[11px] sm:text-xs mt-0.5">
                     4 pragas emblemáticas identificadas e mapeadas.
                   </p>
                 </div>
@@ -446,112 +450,112 @@ export default function App() {
                 <div className="inline-flex rounded-xl bg-slate-900/90 p-1 border border-slate-700/80 backdrop-blur-md">
                   <button
                     onClick={() => setViewMode('cards')}
-                    className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                    className={`inline-flex items-center space-x-1 px-2.5 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold transition-all ${
                       viewMode === 'cards'
                         ? 'bg-emerald-500 text-black shadow-md'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
                     <LayoutGrid className="h-3.5 w-3.5" />
-                    <span>Cards com Abas</span>
+                    <span>Cards</span>
                   </button>
 
                   <button
                     onClick={() => setViewMode('table')}
-                    className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                    className={`inline-flex items-center space-x-1 px-2.5 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold transition-all ${
                       viewMode === 'table'
                         ? 'bg-emerald-500 text-black shadow-md'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
                     <Table className="h-3.5 w-3.5" />
-                    <span>Tabela Comparativa</span>
+                    <span>Tabela</span>
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* MODALIDADE 1: CARDS MINIMALISTAS COM ABAS (TABBED CARDS) */}
+            {/* MODALIDADE 1: CARDS MINIMALISTAS COM ABAS (TABBED CARDS 100% RESPONSIVO) */}
             {viewMode === 'cards' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                 {searchResult.pests.map((pest, pIdx) => {
                   const currentTab = activeTabs[pIdx] || 'description';
 
                   return (
                     <article
                       key={pIdx}
-                      className="glass-panel rounded-2xl border border-emerald-950/80 p-5 space-y-4 hover:border-emerald-800/60 transition-all flex flex-col justify-between"
+                      className="glass-panel rounded-2xl border border-emerald-950/80 p-4 sm:p-5 space-y-3 hover:border-emerald-800/60 transition-all flex flex-col justify-between"
                     >
                       <div className="space-y-3">
                         {/* Header do Card */}
-                        <div className="flex items-start justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+                        <div className="flex items-start justify-between gap-2 border-b border-slate-800/80 pb-2">
                           <div className="space-y-0.5">
-                            <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            <span className="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                               Praga #{pIdx + 1}
                             </span>
-                            <h4 className="text-base font-bold text-white leading-snug">
+                            <h4 className="text-sm sm:text-base font-bold text-white leading-snug">
                               {pest.pestName}
                             </h4>
                           </div>
                         </div>
 
-                        {/* Abas Navegáveis no Topo do Card */}
-                        <div className="flex rounded-xl bg-slate-950/80 p-1 border border-slate-800 text-[11px] font-medium gap-1">
+                        {/* Abas Navegáveis no Topo do Card (Responsivas com Fonte Auto-Ajustável) */}
+                        <div className="flex rounded-xl bg-slate-950/80 p-1 border border-slate-800 text-[10px] sm:text-[11px] font-medium gap-0.5 sm:gap-1">
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'description')}
-                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 ${
+                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate ${
                               currentTab === 'description'
                                 ? 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <Info className="h-3 w-3" />
-                            <span className="hidden sm:inline">Descrição</span>
+                            <Info className="h-3 w-3 flex-shrink-0" />
+                            <span className="truncate">Descrição</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'impact')}
-                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 ${
+                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate ${
                               currentTab === 'impact'
                                 ? 'bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <AlertTriangle className="h-3 w-3" />
-                            <span className="hidden sm:inline">Sintomas</span>
+                            <AlertTriangle className="h-3 w-3 flex-shrink-0" />
+                            <span className="truncate">Sintomas</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'control')}
-                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 ${
+                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate ${
                               currentTab === 'control'
                                 ? 'bg-teal-500/20 text-teal-300 font-bold border border-teal-500/30'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <ShieldCheck className="h-3 w-3" />
-                            <span className="hidden sm:inline">Manejo MIP</span>
+                            <ShieldCheck className="h-3 w-3 flex-shrink-0" />
+                            <span className="truncate">MIP</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'implements')}
-                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 ${
+                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate ${
                               currentTab === 'implements'
                                 ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <Tractor className="h-3 w-3" />
-                            <span className="hidden sm:inline">Tratores</span>
+                            <Tractor className="h-3 w-3 flex-shrink-0" />
+                            <span className="truncate">Tratores</span>
                           </button>
                         </div>
 
                         {/* Conteúdo da Aba Selecionada */}
-                        <div className="p-3.5 rounded-xl bg-slate-950/50 border border-slate-800/80 min-h-[110px] text-xs text-slate-300 leading-relaxed animate-fadeIn">
+                        <div className="p-3 sm:p-3.5 rounded-xl bg-slate-950/50 border border-slate-800/80 min-h-[100px] sm:min-h-[110px] text-xs text-slate-300 leading-relaxed animate-fadeIn">
                           {currentTab === 'description' && (
                             <div className="space-y-1">
                               <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">1. Descrição & Agente Causador:</span>
@@ -583,8 +587,8 @@ export default function App() {
                       </div>
 
                       {/* Rodapé do Card */}
-                      <div className="pt-2.5 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
-                        <span className="truncate max-w-[200px]">Fonte: {pest.sourceUrl}</span>
+                      <div className="pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] sm:text-[11px] text-slate-500">
+                        <span className="truncate max-w-[180px] sm:max-w-[200px]">Fonte: {pest.sourceUrl}</span>
                         <a
                           href={pest.sourceUrl}
                           target="_blank"
@@ -601,29 +605,29 @@ export default function App() {
               </div>
             )}
 
-            {/* MODALIDADE 2: TABELA COMPARATIVA PANORÂMICA */}
+            {/* MODALIDADE 2: TABELA COMPARATIVA PANORÂMICA (RESPONSIVA COM SCROLL LATERAL) */}
             {viewMode === 'table' && (
               <div className="glass-panel rounded-2xl border border-emerald-950/80 overflow-hidden shadow-xl">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
+                  <table className="w-full text-left text-xs min-w-[600px]">
                     <thead className="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold uppercase tracking-wider text-[10px]">
                       <tr>
-                        <th className="p-4 w-1/4">Ameaça & Patógeno</th>
-                        <th className="p-4 w-1/4">Sintomas & Danos</th>
-                        <th className="p-4 w-1/4">Manejo MIP Recomendado</th>
-                        <th className="p-4 w-1/4">Implementos Agrícolas</th>
+                        <th className="p-3.5 w-1/4">Ameaça & Patógeno</th>
+                        <th className="p-3.5 w-1/4">Sintomas & Danos</th>
+                        <th className="p-3.5 w-1/4">Manejo MIP Recomendado</th>
+                        <th className="p-3.5 w-1/4">Implementos Agrícolas</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-800/60 text-slate-300 leading-relaxed">
                       {searchResult.pests.map((pest, idx) => (
                         <tr key={idx} className="hover:bg-slate-900/40 transition-colors">
-                          <td className="p-4 font-semibold text-white space-y-1 align-top">
+                          <td className="p-3.5 font-semibold text-white space-y-1 align-top">
                             <span className="text-[10px] text-emerald-400 uppercase tracking-wider block font-bold">#{idx + 1}</span>
                             <span>{pest.pestName}</span>
                           </td>
-                          <td className="p-4 text-slate-300 align-top">{pest.impactData}</td>
-                          <td className="p-4 text-slate-300 align-top">{pest.controlMethods}</td>
-                          <td className="p-4 text-slate-300 align-top">{pest.agriculturalImplements}</td>
+                          <td className="p-3.5 text-slate-300 align-top">{pest.impactData}</td>
+                          <td className="p-3.5 text-slate-300 align-top">{pest.controlMethods}</td>
+                          <td className="p-3.5 text-slate-300 align-top">{pest.agriculturalImplements}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -637,7 +641,7 @@ export default function App() {
 
       </main>
 
-      {/* PAINEL RETRÁTIL SLIDE-OVER (DRAWER DE HISTÓRICO DE REGISTROS) */}
+      {/* PAINEL RETRÁTIL SLIDE-OVER (DRAWER DE HISTÓRICO - 100% LARGURA EM CELULARES) */}
       {isDrawerOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden animate-fadeIn">
           {/* Overlay de fundo escuro */}
@@ -646,25 +650,25 @@ export default function App() {
             className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
           />
 
-          <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+          <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-0 sm:pl-10">
             <div className="pointer-events-auto w-screen max-w-md bg-[#090d0b] border-l border-emerald-900/40 shadow-2xl flex flex-col justify-between">
               
               {/* Header do Drawer */}
-              <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+              <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <BookOpen className="h-5 w-5 text-emerald-400" />
-                  <h3 className="text-base font-bold text-white">Histórico de Pesquisas</h3>
+                  <h3 className="text-sm sm:text-base font-bold text-white">Histórico de Pesquisas</h3>
                 </div>
                 <button
                   onClick={() => setIsDrawerOpen(false)}
-                  className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
               {/* Corpo do Drawer */}
-              <div className="p-5 flex-1 overflow-y-auto space-y-4">
+              <div className="p-4 sm:p-5 flex-1 overflow-y-auto space-y-4">
                 
                 {/* Controles de Multisseleção */}
                 {savedRecords.length > 0 && (
@@ -746,7 +750,7 @@ export default function App() {
                             <button
                               type="button"
                               onClick={() => toggleSelectRecord(record.id)}
-                              className="text-slate-400 hover:text-white"
+                              className="text-slate-400 hover:text-white p-1"
                             >
                               {isSelected ? (
                                 <CheckSquare className="h-4 w-4 text-emerald-400" />
@@ -790,21 +794,21 @@ export default function App() {
 
       {/* MODAL: SOBRE O PROJETO */}
       {activeModal === 'about' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="glass-panel border border-emerald-800/40 rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="glass-panel border border-emerald-800/40 rounded-2xl max-w-2xl w-full p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3 sm:pb-4">
               <div className="flex items-center space-x-3">
                 <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-                  <BookOpen className="h-6 w-6" />
+                  <BookOpen className="h-5 sm:h-6 w-5 sm:w-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">Radar Agrícola IA</h3>
-                  <p className="text-xs text-slate-400">Projeto de Feira de Ciências & Engenharia Fitossanitária</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-white">Radar Agrícola IA</h3>
+                  <p className="text-[11px] sm:text-xs text-slate-400">Projeto de Feira de Ciências & Engenharia Fitossanitária</p>
                 </div>
               </div>
               <button
                 onClick={() => setActiveModal(null)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+                className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors"
               >
                 ✕
               </button>
@@ -816,7 +820,7 @@ export default function App() {
               </p>
 
               <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/40 space-y-2">
-                <h4 className="font-bold text-emerald-300 flex items-center gap-2 text-sm">
+                <h4 className="font-bold text-emerald-300 flex items-center gap-2 text-xs sm:text-sm">
                   <Cpu className="h-4 w-4" />
                   Arquitetura Híbrida Alternativa C
                 </h4>
@@ -826,8 +830,8 @@ export default function App() {
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-bold text-white text-sm">Escopo de Conteúdo Agronômico:</h4>
-                <ul className="list-disc pl-5 space-y-1 text-slate-400">
+                <h4 className="font-bold text-white text-xs sm:text-sm">Escopo de Conteúdo Agronômico:</h4>
+                <ul className="list-disc pl-5 space-y-1 text-slate-400 text-xs">
                   <li>Identificação precisa do patógeno/inseto vetor com nome popular e científico.</li>
                   <li>Sintomas e prejuízos quantitativos estimados em % na lavoura.</li>
                   <li>Métodos de Manejo Integrado de Pragas (MIP), bioinsumos e vazio sanitário.</li>
@@ -846,7 +850,7 @@ export default function App() {
             <div className="pt-4 border-t border-slate-800 flex justify-end">
               <button
                 onClick={() => setActiveModal(null)}
-                className="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs rounded-xl transition-colors"
+                className="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs rounded-xl transition-colors cursor-pointer"
               >
                 Entendido
               </button>
@@ -857,10 +861,10 @@ export default function App() {
 
       {/* MODAL: DETALHES DA FICHA TÉCNICA */}
       {activeModal === 'detail' && selectedRecordDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="glass-panel border border-emerald-800/40 rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="glass-panel border border-emerald-800/40 rounded-2xl max-w-2xl w-full p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             
-            <div className="relative h-40 rounded-xl overflow-hidden border border-slate-800 mb-4">
+            <div className="relative h-36 sm:h-40 rounded-xl overflow-hidden border border-slate-800 mb-2 sm:mb-4">
               <img
                 src={selectedRecordDetail.cropImageUrl || getCropImageUrl(selectedRecordDetail.cropName)}
                 alt={selectedRecordDetail.cropName}
@@ -871,11 +875,11 @@ export default function App() {
                 <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">
                   {selectedRecordDetail.cropName}
                 </span>
-                <h4 className="text-lg font-bold text-white">{selectedRecordDetail.pestName}</h4>
+                <h4 className="text-base sm:text-lg font-bold text-white">{selectedRecordDetail.pestName}</h4>
               </div>
             </div>
 
-            <div className="space-y-4 text-xs sm:text-sm">
+            <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm">
               <div>
                 <h5 className="font-bold text-emerald-400 mb-1">1. Descrição & Biologia:</h5>
                 <p className="text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-xl border border-slate-800">
@@ -906,10 +910,10 @@ export default function App() {
             </div>
 
             <div className="pt-4 border-t border-slate-800 flex justify-between items-center text-xs">
-              <span className="text-slate-500">Fonte: {selectedRecordDetail.sourceUrl}</span>
+              <span className="text-slate-500 truncate max-w-[200px]">Fonte: {selectedRecordDetail.sourceUrl}</span>
               <button
                 onClick={() => setActiveModal(null)}
-                className="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors"
+                className="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors cursor-pointer"
               >
                 Fechar Ficha
               </button>
