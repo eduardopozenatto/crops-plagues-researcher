@@ -6,13 +6,12 @@
 
 | Variável | Tipo | Descrição | Exemplo |
 | :--- | :--- | :--- | :--- |
-| `GEMINI_API_KEY` | String (Obrigatório para IA) | Chave do Google AI Studio para o Gemini 3.5 Flash | `AIzaSyD...` |
+| `GEMINI_API_KEY` | String (Obrigatório para IA) | Chave do Google AI Studio para o Gemini 2.5 / 3.5 Flash | `AQ.Ab8RN6...` |
 
 ---
 
-## 📌 2. Variáveis do Frontend (`frontend/.env`)
+## 📌 2. Variáveis do Frontend (`frontend/.env` ou Vercel Environment Variables)
 
 | Variável | Tipo | Descrição | Exemplo |
 | :--- | :--- | :--- | :--- |
-| `DATABASE_URL` | String (Obrigatório) | Connection string do SQLite (local) ou PostgreSQL (nuvem) | `file:./dev.db` ou `postgresql://...` |
-| `NEXT_PUBLIC_BACKEND_URL` | String | URL pública do backend FastAPI | `http://localhost:8000` ou `https://radar-backend.onrender.com` |
+| `VITE_BACKEND_URL` | String | URL pública do backend FastAPI no Render | `https://seu-backend.onrender.com` ou `http://localhost:8000` |

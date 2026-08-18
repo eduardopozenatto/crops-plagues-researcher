@@ -2,11 +2,11 @@
 
 ---
 
-## 🐍 Endpoints do Backend FastAPI (Porta 8000)
+## 🐍 Endpoints do Backend FastAPI (Porta 8000 / Nuvem Render)
 
-### `GET /api/status`
-Verifica se o backend e a chave do Gemini estão configurados.
-- **Resposta**:
+### 1. `GET /api/status`
+Verifica a saúde do backend e se a chave do Gemini está configurada.
+- **Resposta HTTP 200 OK**:
   ```json
   {
     "status": "online",
@@ -15,25 +15,25 @@ Verifica se o backend e a chave do Gemini estão configurados.
   }
   ```
 
-### `POST /api/search`
-Processa a cultura agrícola e retorna os 4 diagnósticos fitossanitários com implementos e métodos MIP.
-- **Body**:
+### 2. `POST /api/search`
+Processa a cultura agrícola e retorna as 4 principais pragas/doenças com manejo MIP e implementos agrícolas.
+- **Requisição Body (JSON)**:
   ```json
   {
     "cropName": "Feijão"
   }
   ```
-- **Resposta**:
+- **Resposta HTTP 200 OK (JSON)**:
   ```json
   {
     "cropName": "Feijao",
     "pests": [
       {
         "pestName": "Mosaico-Dourado do Feijoeiro (Bean golden mosaic virus - BGMV)",
-        "description": "...",
-        "impactData": "...",
-        "controlMethods": "...",
-        "agriculturalImplements": "...",
+        "description": "A virose mais severa da cultura do feijão no Brasil...",
+        "impactData": "Provoca mosaico amarelo-ouro intenso nas folhas...",
+        "controlMethods": "Uso de cultivares resistentes/tolerantes...",
+        "agriculturalImplements": "Pulverizador hidráulico tratorizado de barras...",
         "sourceUrl": "https://www.embrapa.br/arroz-e-feijao/doencas"
       }
     ]
@@ -42,13 +42,7 @@ Processa a cultura agrícola e retorna os 4 diagnósticos fitossanitários com i
 
 ---
 
-## 🎨 Endpoints do Orchestrator Next.js (Porta 3000)
+## 🎨 Gerenciamento no Frontend Vite (React 19)
 
-### `POST /api/search`
-Estratégia Cache-First: verifica o banco relacional primeiro (0ms) e, se não encontrar, chama o FastAPI backend e persiste os dados com `cropImageUrl`.
-
-### `GET /api/diseases?q={filtro}`
-Retorna o histórico de diagnósticos gravados no banco.
-
-### `DELETE /api/diseases?id={id}` ou `DELETE /api/diseases` com `{ ids: string[] }`
-Exclui registros do banco individualmente ou em massa.
+- **Comunicação REST**: Requisição `fetch` direta a `${BACKEND_URL}/api/search` (lendo `import.meta.env.VITE_BACKEND_URL`).
+- **Persistência de Histórico**: Armazenamento no `localStorage` do navegador sob a chave `radar_agricola_records`, com fotos HD associadas via `getCropImageUrl(cropName)`.
