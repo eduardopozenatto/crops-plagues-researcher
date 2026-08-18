@@ -48,7 +48,7 @@ interface SavedCropRecord {
   createdAt: string;
 }
 
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
 
 type TabKey = 'description' | 'impact' | 'control' | 'implements';
 
@@ -156,7 +156,7 @@ export default function App() {
 
     } catch (err) {
       console.error(err);
-      alert('Não foi possível conectar ao motor do backend. Certifique-se de que o backend FastAPI esteja rodando na porta 8000.');
+      alert(`Não foi possível conectar ao motor do backend (${BACKEND_URL}). Verifique a URL do backend no Render.`);
     } finally {
       setLoading(false);
       setLoadingStep('');
