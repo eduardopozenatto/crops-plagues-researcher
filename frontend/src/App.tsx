@@ -17,7 +17,9 @@ import {
   LayoutGrid,
   Table,
   History,
-  X
+  X,
+  RefreshCw,
+  Zap
 } from 'lucide-react';
 import { getCropImageUrl } from '@/lib/cropImages';
 
@@ -33,6 +35,7 @@ interface PestItem {
 interface CropSearchResult {
   cropName: string;
   pests: PestItem[];
+  isFromCache?: boolean;
 }
 
 interface SavedCropRecord {
@@ -91,15 +94,18 @@ export default function App() {
     }
   };
 
-  const loadSavedRecordsFromStorage = () => {
+  const loadSavedRecordsFromStorage = (): SavedCropRecord[] => {
     try {
       const stored = localStorage.getItem('radar_agricola_records');
       if (stored) {
-        setSavedRecords(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        setSavedRecords(parsed);
+        return parsed;
       }
     } catch {
       setSavedRecords([]);
     }
+    return [];
   };
 
   const saveRecordToStorage = (cropResult: CropSearchResult) => {
@@ -118,19 +124,56 @@ export default function App() {
     }));
 
     setSavedRecords((prev) => {
-      const updated = [...newItems, ...prev];
+      // Remove entradas antigas da mesma cultura para evitar duplicatas acumuladas
+      const filtered = prev.filter(
+        (item) => item.cropName.toLowerCase() !== cropResult.cropName.toLowerCase()
+      );
+      const updated = [...newItems, ...filtered];
       localStorage.setItem('radar_agricola_records', JSON.stringify(updated));
       return updated;
     });
   };
 
-  const handleSearch = async (searchTerm?: string) => {
+  const handleSearch = async (searchTerm?: string, forceRefresh: boolean = false) => {
     const targetCrop = (searchTerm || query).trim();
     if (!targetCrop) return;
 
+    // 1. CHECAGEM CACHE-FIRST NO HISTÓRICO (LOCALSTORAGE)
+    if (!forceRefresh) {
+      const currentHistory = savedRecords.length > 0 ? savedRecords : loadSavedRecordsFromStorage();
+      const normTarget = targetCrop.toLowerCase();
+      const cached = currentHistory.filter(
+        (r) => r.cropName.toLowerCase() === normTarget
+      );
+
+      if (cached.length >= 1) {
+        const cachedResult: CropSearchResult = {
+          cropName: cached[0].cropName,
+          pests: cached.map((r) => ({
+            pestName: r.pestName,
+            description: r.description,
+            impactData: r.impactData,
+            controlMethods: r.controlMethods,
+            agriculturalImplements: r.agriculturalImplements,
+            sourceUrl: r.sourceUrl,
+          })),
+          isFromCache: true,
+        };
+
+        setSearchResult(cachedResult);
+        const initialTabs: Record<number, TabKey> = {};
+        cachedResult.pests.forEach((_, pIdx) => {
+          initialTabs[pIdx] = 'description';
+        });
+        setActiveTabs(initialTabs);
+        return; // Retorna instantaneamente sem requisitar a rede!
+      }
+    }
+
+    // 2. REQUISITA O BACKEND FASTAPI / GEMINI IA
     setLoading(true);
     setSearchResult(null);
-    setLoadingStep('Consultando Motor Híbrido Fitossanitário...');
+    setLoadingStep('Consultando Motor Fitossanitário Híbrido...');
 
     try {
       const res = await fetch(`${BACKEND_URL}/api/search`, {
@@ -144,10 +187,10 @@ export default function App() {
       }
 
       const data: CropSearchResult = await res.json();
+      data.isFromCache = false;
       setSearchResult(data);
       saveRecordToStorage(data);
 
-      // Inicializa a aba ativa para cada card de praga como 'description'
       const initialTabs: Record<number, TabKey> = {};
       data.pests.forEach((_, pIdx) => {
         initialTabs[pIdx] = 'description';
@@ -156,7 +199,7 @@ export default function App() {
 
     } catch (err) {
       console.error(err);
-      alert(`Não foi possível conectar ao motor do backend (${BACKEND_URL}). Verifique a URL do backend no Render.`);
+      alert(`Não foi possível conectar ao motor do backend (${BACKEND_URL}). Verifique a URL do backend nas variáveis de ambiente.`);
     } finally {
       setLoading(false);
       setLoadingStep('');
@@ -273,7 +316,7 @@ export default function App() {
         <section className="text-center max-w-2xl mx-auto space-y-4 pt-4">
           <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
             <Sparkles className="h-3.5 w-3.5" />
-            <span>Engenharia Fitossanitária & Manejo de Lavoras (Embrapa)</span>
+            <span>Engenharia Fitossanitária & Manejo de Lavoras (Embrapa & IA)</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -351,6 +394,31 @@ export default function App() {
         {searchResult && !loading && (
           <section className="space-y-6 animate-fadeIn">
             
+            {/* Indicador Cache-First + Botão de Forçar Atualização via IA */}
+            <div className="flex flex-wrap items-center justify-between gap-2 px-1">
+              {searchResult.isFromCache ? (
+                <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+                  <Zap className="h-3.5 w-3.5 text-emerald-400 fill-emerald-400/20" />
+                  <span>Carregado do Histórico Local (0ms)</span>
+                </div>
+              ) : (
+                <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300 text-xs font-medium">
+                  <Sparkles className="h-3.5 w-3.5 text-teal-300" />
+                  <span>Diagnóstico via IA (Gemini Engine)</span>
+                </div>
+              )}
+
+              {/* Botão de Repesquisar / Atualizar Diagnóstico via IA */}
+              <button
+                type="button"
+                onClick={() => handleSearch(searchResult.cropName, true)}
+                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-emerald-300 transition-all shadow-sm"
+              >
+                <RefreshCw className="h-3 w-3 text-emerald-400" />
+                <span>Atualizar via IA</span>
+              </button>
+            </div>
+
             {/* Hero Banner Visual de Destaque */}
             <div className="relative rounded-2xl overflow-hidden border border-emerald-800/40 shadow-xl h-44 sm:h-56 flex items-end">
               <img
@@ -753,7 +821,7 @@ export default function App() {
                   Arquitetura Híbrida Alternativa C
                 </h4>
                 <p className="text-xs text-slate-300">
-                  Combina uma base de conhecimento curada da Embrapa cobrindo 50+ culturas agrícolas brasileiras (respostas em 0ms) com a inteligência artificial generativa do Google Gemini 3.5 Flash (direta, sem raspagem de web ruidosa).
+                  Combina uma base de conhecimento curada da Embrapa cobrindo 50+ culturas agrícolas brasileiras (respostas em 0ms) com a inteligência artificial generativa do Google Gemini (direta, sem raspagem de web ruidosa).
                 </p>
               </div>
 

@@ -10,13 +10,6 @@ from dotenv import load_dotenv
 # Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
 
-try:
-    from google import genai
-    from google.genai import types
-    HAS_GOOGLE_GENAI_SDK = True
-except ImportError:
-    HAS_GOOGLE_GENAI_SDK = False
-
 logger = logging.getLogger("rag_service")
 
 class PestInfo(BaseModel):
@@ -245,9 +238,42 @@ AGRONOMIC_KNOWLEDGE_BASE: Dict[str, List[Dict[str, str]]] = {
     ]
 }
 
+def clean_json_response(raw_text: str) -> str:
+    """
+    Remove marcações de código markdown ```json ... ``` do retorno da IA.
+    """
+    cleaned = raw_text.strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.split("\n")
+        if lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].startswith("```"):
+            lines = lines[:-1]
+        cleaned = "\n".join(lines).strip()
+    return cleaned
+
+def parse_pests_payload(parsed: Any, crop_name: str) -> List[PestInfo]:
+    """
+    Extrai e valida os 4 registros de pragas do JSON retornado pelo Gemini.
+    """
+    pests_data = parsed.get("pests", []) if isinstance(parsed, dict) else (parsed if isinstance(parsed, list) else [])
+    pests_list = []
+    
+    for p in pests_data[:4]:
+        if isinstance(p, dict):
+            pests_list.append(PestInfo(
+                pestName=p.get("pestName", f"Praga da cultura de {crop_name}"),
+                description=p.get("description", f"Diagnóstico fitossanitário especializado na cultura de {crop_name}."),
+                impactData=p.get("impactData", f"Impacto econômico e sintomas na lavoura de {crop_name}."),
+                controlMethods=p.get("controlMethods", "Manejo integrado de pragas (MIP) com rotação de culturas e bioinsumos."),
+                agriculturalImplements=p.get("agriculturalImplements", "Pulverizador agrícola hidráulico tratorizado de barras com bicos de jato cônico."),
+                sourceUrl=p.get("sourceUrl", "Gemini AI Engine (Gerado via IA)")
+            ))
+    return pests_list
+
 def analyze_crop_with_gemini(crop_name: str, api_key: str) -> Optional[CropAnalysisResult]:
     """
-    Chama a API do Gemini DIRETAMENTE para gerar diagnósticos agronômicos estruturados e detectar entradas não-agrícolas.
+    Chama a API do Gemini DIRETAMENTE via REST com maxOutputTokens=4096 para gerar diagnósticos agronômicos estruturados de alta fidelidade.
     """
     if not api_key:
         logger.warning("Nenhuma GEMINI_API_KEY fornecida.")
@@ -257,10 +283,10 @@ def analyze_crop_with_gemini(crop_name: str, api_key: str) -> Optional[CropAnaly
 Você é um Engenheiro Agrônomo especialista em fitossanidade, mecanização agrícola e proteção de plantas da Embrapa no Brasil.
 
 VERIFICAÇÃO INICIAL OBRIGATÓRIA:
-Primeiro, verifique se a entrada '{crop_name}' se refere a uma cultura agrícola, planta, fruta, legume, grão, tubérculo ou lavoura semeada real.
+First, verify if '{crop_name}' is a real agricultural crop, plant, fruit, legume, grain, tuber, or cultivated crop.
 
-CASO NÃO SEJA UMA CULTURA AGRÍCOLA (ex: móveis, carros, cidades, pessoas, marcas, objetos, termos não vegetais):
-Retorne EXATAMENTE o seguinte JSON indicando recusa fitossanitária:
+IF NOT AN AGRICULTURAL CROP (e.g. furniture, cars, cities, people, brands, non-plant objects):
+Return EXACTLY this JSON refusing non-agricultural search:
 {{
   "cropName": "{crop_name}",
   "pests": [
@@ -275,77 +301,34 @@ Retorne EXATAMENTE o seguinte JSON indicando recusa fitossanitária:
   ]
 }}
 
-CASO SEJA UMA CULTURA AGRÍCOLA VÁLIDA:
-Identifique e detalhe AS 4 PRINCIPAIS PRAGAS OU DOENÇAS MAIS FAMOSAS E CARACTERÍSTICAS de maior impacto econômico na cultura agrícola de '{crop_name}', E OS IMPLEMENTOS E MÉTODOS DE MANEJO E CONTROLE UTILIZADOS NA LITERATURA CIENTÍFICA.
+IF IT IS A VALID AGRICULTURAL CROP:
+Identify and detail THE 4 MAIN PESTS OR DISEASES most famous and characteristic of '{crop_name}', AND THE AGRICULTURAL IMPLEMENTS AND MIP CONTROL METHODS.
 
-REGRAS OBRIGATÓRIAS DE RIGOR TÉCNICO E ESPECIFICIDADE POR CULTURA:
-1. Retorne EXATAMENTE 4 pragas ou doenças REAIS, ALTAMENTE CARACTERÍSTICAS e DISTINTAS para a cultura de '{crop_name}'.
-2. É OBRIGATÓRIO priorizar pragas emblemáticas exclusivas/famosas da própria cultura.
-3. É ESTRITAMENTE PROIBIDO utilizar nomes genéricos ou modelos repetidos. Cada uma das 4 pragas deve ser única e botanicamente associada a '{crop_name}'.
-4. Para cada uma das 4 pragas/doenças, forneça:
-   - 'pestName': Nome popular em português acompanhado do NOME CIENTÍFICO EXATO entre parênteses (ex: Mosaico-Dourado do Feijoeiro (Bean golden mosaic virus - BGMV)).
-   - 'description': Explicação agronômica aprofundada (3 a 5 frases) sobre a biologia do patógeno/inseto, modo de infecção, hospedeiros e condições climáticas favoráveis.
-   - 'impactData': Sintomas específicos observados nas folhas, caules, raízes ou frutos, fase crítica de ataque e perdas estimadas em % na produtividade (ex: 40% a 100% de perda).
-   - 'controlMethods': Recomendações técnicas detalhadas de manejo e controle segundo a literatura (Manejo Integrado de Pragas - MIP, controle cultural, biológico, vazio sanitário e químico).
-   - 'agriculturalImplements': Implementos, tratores, bicos de pulverização e equipamentos agrícolas específicos recomendados na literatura para o manejo (ex: Pulverizador hidráulico tratorizado de barras com bicos de jato cônico, Atomizador turbinado, Sulcador de dosagem de insumos no plantio).
-   - 'sourceUrl': Utilize EXATAMENTE o texto "Gemini AI Engine (Gerado via IA)".
+FOR EACH OF THE 4 PESTS PROVIDE:
+- 'pestName': Popular name in Portuguese with EXACT SCIENTIFIC NAME in parentheses (e.g. Mosaico-Dourado do Feijoeiro (Bean golden mosaic virus - BGMV)).
+- 'description': Concise agronomic explanation (2 to 3 sentences).
+- 'impactData': Specific symptoms and quantitative loss in % (e.g. 30% a 70% de perda).
+- 'controlMethods': Technical MIP control recommendations.
+- 'agriculturalImplements': Specific tractors, boom sprayers, nozzles, or implements.
+- 'sourceUrl': Exactly "Gemini AI Engine (Gerado via IA)".
 
-Sua resposta DEVE ser um objeto JSON estrito com a chave principal "pests":
+Return ONLY a strict JSON object:
 {{
   "cropName": "{crop_name}",
   "pests": [
     {{
-      "pestName": "Nome da Praga 1 Específica (Nome científico)",
-      "description": "Explicação agronômica detalhada de 3 a 5 frases...",
-      "impactData": "Sintomas específicos e perdas quantitativas em %...",
-      "controlMethods": "Recomendações técnicas de manejo e controle MIP...",
-      "agriculturalImplements": "Implementos e equipamentos agrícolas recomendados...",
+      "pestName": "Nome da Praga (Nome científico)",
+      "description": "Descrição agronômica...",
+      "impactData": "Sintomas e perdas...",
+      "controlMethods": "Recomendações MIP...",
+      "agriculturalImplements": "Implementos recomendados...",
       "sourceUrl": "Gemini AI Engine (Gerado via IA)"
     }}
   ]
 }}
 """
 
-    models_to_try = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash-latest"]
-
-    if HAS_GOOGLE_GENAI_SDK:
-        try:
-            client = genai.Client(api_key=api_key, http_options={"timeout": 20.0})
-            for m in models_to_try:
-                try:
-                    logger.info(f"Chamando Gemini Direto via SDK: {m}")
-                    res = client.models.generate_content(
-                        model=m,
-                        contents=prompt,
-                        config=types.GenerateContentConfig(
-                            response_mime_type="application/json",
-                            temperature=0.1,
-                        ),
-                    )
-                    if res and res.text:
-                        parsed = json.loads(res.text)
-                        pests_data = parsed.get("pests", []) if isinstance(parsed, dict) else (parsed if isinstance(parsed, list) else [])
-
-                        if len(pests_data) >= 1:
-                            pests_list = []
-                            for p in pests_data[:4]:
-                                if isinstance(p, dict):
-                                    pests_list.append(PestInfo(
-                                        pestName=p.get("pestName", f"Praga da cultura de {crop_name}"),
-                                        description=p.get("description", f"Diagnóstico fitossanitário especializado na cultura de {crop_name}."),
-                                        impactData=p.get("impactData", f"Impacto econômico e sintomas na lavoura de {crop_name}."),
-                                        controlMethods=p.get("controlMethods", "Manejo integrado de pragas (MIP) com rotação de culturas e bioinsumos."),
-                                        agriculturalImplements=p.get("agriculturalImplements", "Pulverizador agrícola hidráulico tratorizado de barras com bicos de jato cônico."),
-                                        sourceUrl=p.get("sourceUrl", "Gemini AI Engine (Gerado via IA)")
-                                    ))
-                            
-                            if len(pests_list) >= 1:
-                                return CropAnalysisResult(cropName=crop_name.capitalize(), pests=pests_list)
-                except Exception as inner_e:
-                    logger.warning(f"Modelo {m} expirou ou retornou erro: {inner_e}")
-                    continue
-        except Exception as e:
-            logger.error(f"Erro no SDK do Gemini: {e}")
+    models_to_try = ["gemini-3.5-flash", "gemini-3.6-flash", "gemini-3.7-flash"]
 
     for m in models_to_try:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={api_key}"
@@ -354,34 +337,28 @@ Sua resposta DEVE ser um objeto JSON estrito com a chave principal "pests":
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {
                 "response_mime_type": "application/json",
-                "temperature": 0.1
+                "temperature": 0.1,
+                "maxOutputTokens": 4096
             }
         }
         try:
-            with httpx.Client(timeout=httpx.Timeout(20.0, connect=5.0)) as client:
+            logger.info(f"Chamando Gemini REST modelo: {m} para cultura '{crop_name}'")
+            with httpx.Client(timeout=httpx.Timeout(15.0, connect=5.0)) as client:
                 res = client.post(url, headers=headers, json=payload)
                 if res.status_code == 200:
                     data = res.json()
                     text_response = data["candidates"][0]["content"]["parts"][0]["text"]
-                    parsed = json.loads(text_response)
+                    cleaned_text = clean_json_response(text_response)
+                    parsed = json.loads(cleaned_text)
                     
-                    pests_data = parsed.get("pests", []) if isinstance(parsed, dict) else (parsed if isinstance(parsed, list) else [])
-                    if len(pests_data) >= 1:
-                        pests_list = []
-                        for p in pests_data[:4]:
-                            if isinstance(p, dict):
-                                pests_list.append(PestInfo(
-                                    pestName=p.get("pestName", f"Praga da Cultura de {crop_name}"),
-                                    description=p.get("description", f"Descrição agronômica detalhada de {crop_name}."),
-                                    impactData=p.get("impactData", f"Sintomas e perdas na lavoura de {crop_name}."),
-                                    controlMethods=p.get("controlMethods", "Manejo integrado de pragas (MIP) com controle biológico."),
-                                    agriculturalImplements=p.get("agriculturalImplements", "Pulverizador tratorizado de barras com bicos ajustáveis."),
-                                    sourceUrl=p.get("sourceUrl", "Gemini AI Engine (Gerado via IA)")
-                                ))
-                        if len(pests_list) >= 1:
-                            return CropAnalysisResult(cropName=crop_name.capitalize(), pests=pests_list)
+                    pests_list = parse_pests_payload(parsed, crop_name)
+                    if len(pests_list) >= 1:
+                        logger.info(f"Sucesso na chamada Gemini via {m} para '{crop_name}' ({len(pests_list)} pragas)")
+                        return CropAnalysisResult(cropName=crop_name.capitalize(), pests=pests_list)
+                else:
+                    logger.warning(f"Modelo REST {m} retornou status {res.status_code}: {res.text[:200]}")
         except Exception as e:
-            logger.warning(f"Modelo REST {m} expirou ou falhou: {e}")
+            logger.warning(f"Modelo REST {m} falhou: {e}")
             continue
 
     return None
@@ -454,7 +431,7 @@ def execute_crop_rag_pipeline(crop_name: str) -> CropAnalysisResult:
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
 
     if api_key:
-        logger.info(f"Executando chamada Gemini Direta para '{crop_name}'")
+        logger.info(f"Executando chamada Gemini Direta para '{crop_name}' com maxOutputTokens=4096")
         result = analyze_crop_with_gemini(crop_name, api_key)
         if result:
             return result
