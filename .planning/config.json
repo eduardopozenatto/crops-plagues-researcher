@@ -1,0 +1,20 @@
+{
+  "version": "2.3.0",
+  "project_name": "Radar Agrícola IA",
+  "workflow": {
+    "auto_verify": true,
+    "strict_typescript": true,
+    "zero_sigbus": true,
+    "cache_first": true,
+    "cloud_provider_frontend": "Vercel",
+    "cloud_provider_backend": "Render"
+  },
+  "models": {
+    "primary": "gemini-3.6-flash",
+    "fallback": "gemini-3.5-flash"
+  },
+  "customizations": {
+    "rules_path": "AGENTS.md",
+    "skills_path": ".agents/skills"
+  }
+}
