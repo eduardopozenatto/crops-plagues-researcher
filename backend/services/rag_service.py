@@ -5,6 +5,10 @@ import unicodedata
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 import httpx
+from dotenv import load_dotenv
+
+# Carrega variáveis de ambiente do arquivo .env
+load_dotenv()
 
 try:
     from google import genai
@@ -243,9 +247,10 @@ AGRONOMIC_KNOWLEDGE_BASE: Dict[str, List[Dict[str, str]]] = {
 
 def analyze_crop_with_gemini(crop_name: str, api_key: str) -> Optional[CropAnalysisResult]:
     """
-    Chama a API do Gemini 3.5 Flash DIRETAMENTE para gerar diagnósticos agronômicos estruturados e detectar entradas não-agrícolas.
+    Chama a API do Gemini DIRETAMENTE para gerar diagnósticos agronômicos estruturados e detectar entradas não-agrícolas.
     """
     if not api_key:
+        logger.warning("Nenhuma GEMINI_API_KEY fornecida.")
         return None
 
     prompt = f"""
@@ -301,7 +306,7 @@ Sua resposta DEVE ser um objeto JSON estrito com a chave principal "pests":
 }}
 """
 
-    models_to_try = ["gemini-3.5-flash", "gemini-3.6-flash", "gemini-flash-latest"]
+    models_to_try = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash-latest"]
 
     if HAS_GOOGLE_GENAI_SDK:
         try:
@@ -449,9 +454,12 @@ def execute_crop_rag_pipeline(crop_name: str) -> CropAnalysisResult:
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
 
     if api_key:
+        logger.info(f"Executando chamada Gemini Direta para '{crop_name}'")
         result = analyze_crop_with_gemini(crop_name, api_key)
         if result:
             return result
+    else:
+        logger.warning("GEMINI_API_KEY não configurada no backend/.env. Executando fallback de contingência.")
 
     # 3. Fallback de contingência
     return fallback_crop_analysis(crop_name)
