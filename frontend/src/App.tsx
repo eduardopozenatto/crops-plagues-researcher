@@ -276,7 +276,7 @@ export default function App() {
             </div>
             <div className="truncate">
               <h1 className="text-xs sm:text-sm font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
-                <span>Radar Agrícola IA</span>
+                <span>Radar Agrícola de Pragas</span>
                 <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
                   v2.4.0
                 </span>
