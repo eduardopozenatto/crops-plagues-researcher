@@ -13,16 +13,16 @@ import {
   CheckSquare,
   Square,
   Sparkles,
-  ImageIcon,
   LayoutGrid,
   Table,
   History,
   X,
   RefreshCw,
   Zap,
-  CornerDownLeft
+  CornerDownLeft,
+  Layers
 } from 'lucide-react';
-import { getCropImageUrl } from '@/lib/cropImages';
+import { getCropMeta } from '@/lib/cropImages';
 
 interface PestItem {
   pestName: string;
@@ -48,7 +48,6 @@ interface SavedCropRecord {
   controlMethods: string;
   agriculturalImplements: string;
   sourceUrl: string;
-  cropImageUrl?: string;
   createdAt: string;
 }
 
@@ -110,7 +109,6 @@ export default function App() {
   };
 
   const saveRecordToStorage = (cropResult: CropSearchResult) => {
-    const cropImg = getCropImageUrl(cropResult.cropName);
     const newItems: SavedCropRecord[] = cropResult.pests.map((p, idx) => ({
       id: `${Date.now()}-${idx}-${Math.random().toString(36).substring(2, 6)}`,
       cropName: cropResult.cropName,
@@ -120,7 +118,6 @@ export default function App() {
       controlMethods: p.controlMethods,
       agriculturalImplements: p.agriculturalImplements,
       sourceUrl: p.sourceUrl,
-      cropImageUrl: cropImg,
       createdAt: new Date().toISOString(),
     }));
 
@@ -276,9 +273,9 @@ export default function App() {
             </div>
             <div className="truncate">
               <h1 className="text-xs sm:text-sm font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
-                <span>Radar Agrícola de Pragas</span>
+                <span>Radar Agrícola IA</span>
                 <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
-                  v2.4.0
+                  v2.5.0
                 </span>
               </h1>
             </div>
@@ -323,10 +320,10 @@ export default function App() {
             Diagnóstico Agronômico Instantâneo
           </h2>
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed px-2">
-            Pesquise a lavoura semeada para visualizar fotos em HD, pragas características, sintomas, manejo MIP e equipamentos.
+            Pesquise a lavoura semeada para visualizar pragas características, sintomas, manejo MIP e equipamentos recomendados.
           </p>
 
-          {/* Form de Busca Responsivo (Opção 1-A: Botão 100% largura no Mobile, Lado a lado no Desktop) */}
+          {/* Form de Busca Responsivo */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -363,7 +360,7 @@ export default function App() {
             </button>
           </form>
 
-          {/* Chips de Culturas Populares em Grade Responsiva (Opção 2-B) */}
+          {/* Chips de Culturas Populares em Grade Responsiva */}
           <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2">
             <span className="text-[11px] text-slate-500 font-medium mr-1">Atalhos rápidos:</span>
             {popularCrops.map((c) => (
@@ -394,88 +391,116 @@ export default function App() {
           </div>
         )}
 
-        {/* PAINEL DE RESULTADOS (HERO BANNER + MODOS DE VISÃO) */}
+        {/* PAINEL DE RESULTADOS (HERO CARD TECNOLÓGICO + MODOS DE VISÃO) */}
         {searchResult && !loading && (
           <section className="space-y-4 sm:space-y-6 animate-fadeIn">
             
-            {/* Indicador Cache-First + Botão de Forçar Atualização via IA */}
-            <div className="flex flex-wrap items-center justify-between gap-2 px-1">
-              {searchResult.isFromCache ? (
-                <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] sm:text-xs font-medium">
-                  <Zap className="h-3.5 w-3.5 text-emerald-400 fill-emerald-400/20" />
-                  <span>Carregado do Histórico Local (0ms)</span>
-                </div>
-              ) : (
-                <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300 text-[11px] sm:text-xs font-medium">
-                  <Sparkles className="h-3.5 w-3.5 text-teal-300" />
-                  <span>Diagnóstico via IA (Gemini Engine)</span>
-                </div>
-              )}
-
-              {/* Botão de Repesquisar / Atualizar Diagnóstico via IA */}
-              <button
-                type="button"
-                onClick={() => handleSearch(searchResult.cropName, true)}
-                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-[11px] sm:text-xs font-medium text-slate-300 hover:text-emerald-300 transition-all shadow-sm"
-              >
-                <RefreshCw className="h-3 w-3 text-emerald-400" />
-                <span>Atualizar via IA</span>
-              </button>
-            </div>
-
-            {/* Hero Banner Visual de Destaque Responsivo */}
-            <div className="relative rounded-2xl overflow-hidden border border-emerald-800/40 shadow-xl h-36 sm:h-56 flex items-end">
-              <img
-                src={getCropImageUrl(searchResult.cropName)}
-                alt={searchResult.cropName}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#090d0b] via-[#090d0b]/70 to-transparent" />
-
-              <div className="relative z-10 p-4 sm:p-6 w-full flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 sm:gap-3">
-                <div>
-                  <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-[10px] sm:text-[11px] font-semibold mb-0.5">
-                    <ImageIcon className="h-3 w-3" />
-                    <span>Fotografia Agronômica HD</span>
+            {/* HERO CARD TECNOLÓGICO MINIMALISTA (Substitui o banner fotográfico) */}
+            <div className="relative rounded-2xl border border-emerald-900/40 bg-gradient-to-b from-[#0e1612] to-[#090d0b] p-5 sm:p-6 shadow-xl space-y-4">
+              
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div className="flex items-center space-x-3.5">
+                  <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-2xl sm:text-3xl shadow-inner flex-shrink-0">
+                    {getCropMeta(searchResult.cropName).icon}
                   </div>
-                  <h3 className="text-xl sm:text-4xl font-extrabold text-white capitalize drop-shadow">
-                    {searchResult.cropName}
-                  </h3>
-                  <p className="text-slate-300 text-[11px] sm:text-xs mt-0.5">
-                    4 pragas emblemáticas identificadas e mapeadas.
-                  </p>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        {getCropMeta(searchResult.cropName).category}
+                      </span>
+                      {searchResult.isFromCache ? (
+                        <span className="inline-flex items-center space-x-1 text-[10px] font-medium text-emerald-400/90">
+                          <Zap className="h-2.5 w-2.5 fill-emerald-400" />
+                          <span>Base Embrapa (0ms)</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center space-x-1 text-[10px] font-medium text-teal-300">
+                          <Sparkles className="h-2.5 w-2.5 text-teal-300" />
+                          <span>Síntese Gemini IA</span>
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-white capitalize tracking-tight mt-0.5">
+                      {searchResult.cropName}
+                    </h3>
+                  </div>
                 </div>
 
-                {/* Alternador de Modo de Exibição (Cards vs Tabela) */}
-                <div className="inline-flex rounded-xl bg-slate-900/90 p-1 border border-slate-700/80 backdrop-blur-md">
+                {/* Controles de Ação (Alternador de Modo + Atualizar IA) */}
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
                   <button
-                    onClick={() => setViewMode('cards')}
-                    className={`inline-flex items-center space-x-1 px-2.5 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold transition-all ${
-                      viewMode === 'cards'
-                        ? 'bg-emerald-500 text-black shadow-md'
-                        : 'text-slate-400 hover:text-white'
-                    }`}
+                    type="button"
+                    onClick={() => handleSearch(searchResult.cropName, true)}
+                    className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-emerald-300 transition-all shadow-sm cursor-pointer"
                   >
-                    <LayoutGrid className="h-3.5 w-3.5" />
-                    <span>Cards</span>
+                    <RefreshCw className="h-3.5 w-3.5 text-emerald-400" />
+                    <span>Reanalisar via IA</span>
                   </button>
 
-                  <button
-                    onClick={() => setViewMode('table')}
-                    className={`inline-flex items-center space-x-1 px-2.5 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold transition-all ${
-                      viewMode === 'table'
-                        ? 'bg-emerald-500 text-black shadow-md'
-                        : 'text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    <Table className="h-3.5 w-3.5" />
-                    <span>Tabela</span>
-                  </button>
+                  <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800">
+                    <button
+                      onClick={() => setViewMode('cards')}
+                      className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        viewMode === 'cards'
+                          ? 'bg-emerald-500 text-black shadow-md'
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      <LayoutGrid className="h-3.5 w-3.5" />
+                      <span>Cards</span>
+                    </button>
+
+                    <button
+                      onClick={() => setViewMode('table')}
+                      className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        viewMode === 'table'
+                          ? 'bg-emerald-500 text-black shadow-md'
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      <Table className="h-3.5 w-3.5" />
+                      <span>Tabela</span>
+                    </button>
+                  </div>
                 </div>
               </div>
+
+              {/* Badges de Resumo Agronômico */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-800/80 text-xs">
+                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/60 flex items-center space-x-2.5">
+                  <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400">
+                    <AlertTriangle className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-500 block uppercase font-semibold">Diagnóstico</span>
+                    <span className="font-medium text-slate-200">{searchResult.pests.length} Ameaças Críticas Mapeadas</span>
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/60 flex items-center space-x-2.5">
+                  <div className="p-1.5 rounded-lg bg-teal-500/10 text-teal-400">
+                    <ShieldCheck className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-500 block uppercase font-semibold">Controle</span>
+                    <span className="font-medium text-slate-200">Manejo Integrado & Bioinsumos</span>
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/60 flex items-center space-x-2.5">
+                  <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400">
+                    <Tractor className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-500 block uppercase font-semibold">Mecanização</span>
+                    <span className="font-medium text-slate-200">Tratores, Bicos & Pulverizadores</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
-            {/* MODALIDADE 1: CARDS MINIMALISTAS COM ABAS (TABBED CARDS 100% RESPONSIVO) */}
+            {/* MODALIDADE 1: CARDS MINIMALISTAS COM ABAS */}
             {viewMode === 'cards' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                 {searchResult.pests.map((pest, pIdx) => {
@@ -499,12 +524,12 @@ export default function App() {
                           </div>
                         </div>
 
-                        {/* Abas Navegáveis no Topo do Card (Responsivas com Fonte Auto-Ajustável) */}
+                        {/* Abas Navegáveis no Topo do Card */}
                         <div className="flex rounded-xl bg-slate-950/80 p-1 border border-slate-800 text-[10px] sm:text-[11px] font-medium gap-0.5 sm:gap-1">
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'description')}
-                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate ${
+                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
                               currentTab === 'description'
                                 ? 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30'
                                 : 'text-slate-400 hover:text-slate-200'
@@ -517,7 +542,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'impact')}
-                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate ${
+                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
                               currentTab === 'impact'
                                 ? 'bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30'
                                 : 'text-slate-400 hover:text-slate-200'
@@ -530,7 +555,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'control')}
-                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate ${
+                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
                               currentTab === 'control'
                                 ? 'bg-teal-500/20 text-teal-300 font-bold border border-teal-500/30'
                                 : 'text-slate-400 hover:text-slate-200'
@@ -543,7 +568,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'implements')}
-                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate ${
+                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
                               currentTab === 'implements'
                                 ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30'
                                 : 'text-slate-400 hover:text-slate-200'
@@ -605,7 +630,7 @@ export default function App() {
               </div>
             )}
 
-            {/* MODALIDADE 2: TABELA COMPARATIVA PANORÂMICA (RESPONSIVA COM SCROLL LATERAL) */}
+            {/* MODALIDADE 2: TABELA COMPARATIVA PANORÂMICA */}
             {viewMode === 'table' && (
               <div className="glass-panel rounded-2xl border border-emerald-950/80 overflow-hidden shadow-xl">
                 <div className="overflow-x-auto">
@@ -641,10 +666,9 @@ export default function App() {
 
       </main>
 
-      {/* PAINEL RETRÁTIL SLIDE-OVER (DRAWER DE HISTÓRICO - 100% LARGURA EM CELULARES) */}
+      {/* PAINEL RETRÁTIL SLIDE-OVER (DRAWER DE HISTÓRICO - COM ÍCONES BOTÂNICOS ELEGANTES) */}
       {isDrawerOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden animate-fadeIn">
-          {/* Overlay de fundo escuro */}
           <div
             onClick={() => setIsDrawerOpen(false)}
             className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
@@ -661,7 +685,7 @@ export default function App() {
                 </div>
                 <button
                   onClick={() => setIsDrawerOpen(false)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -676,7 +700,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={toggleSelectAll}
-                      className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 font-medium transition-colors"
+                      className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 font-medium transition-colors cursor-pointer"
                     >
                       {selectedIds.length === getFilteredRecords().length ? (
                         <CheckSquare className="h-3.5 w-3.5 text-emerald-400" />
@@ -690,7 +714,7 @@ export default function App() {
                       <button
                         type="button"
                         onClick={deleteSelectedRecords}
-                        className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/30 text-xs text-rose-300 font-semibold transition-colors"
+                        className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/30 text-xs text-rose-300 font-semibold transition-colors cursor-pointer"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                         <span>Excluir ({selectedIds.length})</span>
@@ -723,6 +747,7 @@ export default function App() {
                   <div className="space-y-3">
                     {getFilteredRecords().map((record) => {
                       const isSelected = selectedIds.includes(record.id);
+                      const cropMeta = getCropMeta(record.cropName);
                       return (
                         <div
                           key={record.id}
@@ -733,15 +758,13 @@ export default function App() {
                           }`}
                         >
                           <div className="flex items-start justify-between gap-2">
-                            <div className="flex items-center space-x-2 overflow-hidden">
-                              <img
-                                src={record.cropImageUrl || getCropImageUrl(record.cropName)}
-                                alt={record.cropName}
-                                className="h-8 w-8 rounded-lg object-cover border border-slate-700 flex-shrink-0"
-                              />
+                            <div className="flex items-center space-x-2.5 overflow-hidden">
+                              <div className="h-9 w-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-lg flex-shrink-0">
+                                {cropMeta.icon}
+                              </div>
                               <div className="truncate">
                                 <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider block">
-                                  {record.cropName}
+                                  {record.cropName} • {cropMeta.category}
                                 </span>
                                 <h5 className="text-xs font-bold text-white truncate">{record.pestName}</h5>
                               </div>
@@ -750,7 +773,7 @@ export default function App() {
                             <button
                               type="button"
                               onClick={() => toggleSelectRecord(record.id)}
-                              className="text-slate-400 hover:text-white p-1"
+                              className="text-slate-400 hover:text-white p-1 cursor-pointer"
                             >
                               {isSelected ? (
                                 <CheckSquare className="h-4 w-4 text-emerald-400" />
@@ -767,7 +790,7 @@ export default function App() {
                                 setSelectedRecordDetail(record);
                                 setActiveModal('detail');
                               }}
-                              className="text-emerald-400 hover:text-emerald-300 font-semibold"
+                              className="text-emerald-400 hover:text-emerald-300 font-semibold cursor-pointer"
                             >
                               Ver Ficha Técnica
                             </button>
@@ -802,13 +825,13 @@ export default function App() {
                   <BookOpen className="h-5 sm:h-6 w-5 sm:w-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white">Radar Agrícola de Pragas</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-400">Projeto para Mostra Regional de Ciências & Engenharia Fitossanitária</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-white">Radar Agrícola IA</h3>
+                  <p className="text-[11px] sm:text-xs text-slate-400">Projeto de Feira de Ciências & Engenharia Fitossanitária</p>
                 </div>
               </div>
               <button
                 onClick={() => setActiveModal(null)}
-                className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors"
+                className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
               >
                 ✕
               </button>
@@ -816,13 +839,13 @@ export default function App() {
 
             <div className="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
               <p>
-                O <strong className="text-emerald-400">Radar Agrícola de Pragas</strong> é um portal web interativo desenvolvido especificamente para apresentação na Mostra Regional de Ciências no Instituto Federal Farroupilha Campus - Frederico Westphalen, relacionando plantas semeadas às suas ameaças biológicas mais características.
+                O <strong className="text-emerald-400">Radar Agrícola IA</strong> é um portal web interativo desenvolvido especificamente para apresentação em feiras de ciências e feiras agrícolas, relacionando plantas semeadas às suas ameaças biológicas mais características.
               </p>
 
               <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/40 space-y-2">
                 <h4 className="font-bold text-emerald-300 flex items-center gap-2 text-xs sm:text-sm">
                   <Cpu className="h-4 w-4" />
-                  Arquitetura Híbrida
+                  Arquitetura Híbrida Alternativa C
                 </h4>
                 <p className="text-xs text-slate-300">
                   Combina uma base de conhecimento curada da Embrapa cobrindo 50+ culturas agrícolas brasileiras (respostas em 0ms) com a inteligência artificial generativa do Google Gemini (direta, sem raspagem de web ruidosa).
@@ -859,21 +882,19 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL: DETALHES DA FICHA TÉCNICA */}
+      {/* MODAL: DETALHES DA FICHA TÉCNICA (HEADER TECNOLÓGICO LIMPO) */}
       {activeModal === 'detail' && selectedRecordDetail && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
           <div className="glass-panel border border-emerald-800/40 rounded-2xl max-w-2xl w-full p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             
-            <div className="relative h-36 sm:h-40 rounded-xl overflow-hidden border border-slate-800 mb-2 sm:mb-4">
-              <img
-                src={selectedRecordDetail.cropImageUrl || getCropImageUrl(selectedRecordDetail.cropName)}
-                alt={selectedRecordDetail.cropName}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#090d0b] via-transparent to-transparent" />
-              <div className="absolute bottom-3 left-4">
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">
-                  {selectedRecordDetail.cropName}
+            {/* Header da Ficha Técnica */}
+            <div className="rounded-xl p-4 bg-gradient-to-r from-emerald-950/40 to-slate-900 border border-emerald-800/40 flex items-center space-x-3.5 mb-2 sm:mb-4">
+              <div className="h-12 w-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-2xl flex-shrink-0">
+                {getCropMeta(selectedRecordDetail.cropName).icon}
+              </div>
+              <div>
+                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
+                  {selectedRecordDetail.cropName} • {getCropMeta(selectedRecordDetail.cropName).category}
                 </span>
                 <h4 className="text-base sm:text-lg font-bold text-white">{selectedRecordDetail.pestName}</h4>
               </div>
