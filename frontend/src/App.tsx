@@ -802,8 +802,8 @@ export default function App() {
                   <BookOpen className="h-5 sm:h-6 w-5 sm:w-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white">Radar Agrícola IA</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-400">Projeto de Feira de Ciências & Engenharia Fitossanitária</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-white">Radar Agrícola de Pragas</h3>
+                  <p className="text-[11px] sm:text-xs text-slate-400">Projeto para Mostra Regional de Ciências & Engenharia Fitossanitária</p>
                 </div>
               </div>
               <button
@@ -816,13 +816,13 @@ export default function App() {
 
             <div className="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
               <p>
-                O <strong className="text-emerald-400">Radar Agrícola IA</strong> é um portal web interativo desenvolvido especificamente para apresentação em feiras de ciências e feiras agrícolas, relacionando plantas semeadas às suas ameaças biológicas mais características.
+                O <strong className="text-emerald-400">Radar Agrícola de Pragas</strong> é um portal web interativo desenvolvido especificamente para apresentação na Mostra Regional de Ciências no Instituto Federal Farroupilha Campus - Frederico Westphalen, relacionando plantas semeadas às suas ameaças biológicas mais características.
               </p>
 
               <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/40 space-y-2">
                 <h4 className="font-bold text-emerald-300 flex items-center gap-2 text-xs sm:text-sm">
                   <Cpu className="h-4 w-4" />
-                  Arquitetura Híbrida Alternativa C
+                  Arquitetura Híbrida
                 </h4>
                 <p className="text-xs text-slate-300">
                   Combina uma base de conhecimento curada da Embrapa cobrindo 50+ culturas agrícolas brasileiras (respostas em 0ms) com a inteligência artificial generativa do Google Gemini (direta, sem raspagem de web ruidosa).
