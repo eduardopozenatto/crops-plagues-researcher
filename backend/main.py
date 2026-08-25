@@ -13,9 +13,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("backend_main")
 
 app = FastAPI(
-    title="Radar Agrícola IA - API Backend",
-    description="Motor de Inteligência Fitossanitária Híbrido (Alternativa C)",
-    version="2.3.0"
+    title="Identificador Agrícola de Pragas - API Backend",
+    description="Motor de Inteligência Fitossanitária",
+    version="2.5.0"
 )
 
 app.add_middleware(
@@ -34,7 +34,7 @@ def status_check():
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     return {
         "status": "online",
-        "engine": "Alternativa C Híbrida (Base 50+ Culturas 0ms + Gemini Flash Direto <1.5s)",
+        "engine": "Base de Conhecimento Embrapa + Google Gemini IA",
         "gemini_api_key_configured": bool(api_key),
     }
 

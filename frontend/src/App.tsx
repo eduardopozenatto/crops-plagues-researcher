@@ -273,7 +273,7 @@ export default function App() {
             </div>
             <div className="truncate">
               <h1 className="text-xs sm:text-sm font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
-                <span>Radar Agrícola IA</span>
+                <span>Identificador Agrícola de Pragas</span>
                 <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
                   v2.5.0
                 </span>
@@ -825,7 +825,7 @@ export default function App() {
                   <BookOpen className="h-5 sm:h-6 w-5 sm:w-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white">Radar Agrícola IA</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-white">Identificador Agrícola de Pragas</h3>
                   <p className="text-[11px] sm:text-xs text-slate-400">Projeto de Feira de Ciências & Engenharia Fitossanitária</p>
                 </div>
               </div>
@@ -839,16 +839,16 @@ export default function App() {
 
             <div className="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
               <p>
-                O <strong className="text-emerald-400">Radar Agrícola IA</strong> é um portal web interativo desenvolvido especificamente para apresentação em feiras de ciências e feiras agrícolas, relacionando plantas semeadas às suas ameaças biológicas mais características.
+                O <strong className="text-emerald-400">Identificador Agrícola de Pragas</strong> é um portal web interativo desenvolvido para identificação de ameaças biológicas e fitossanitárias em lavouras e culturas agrícolas.
               </p>
 
               <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/40 space-y-2">
                 <h4 className="font-bold text-emerald-300 flex items-center gap-2 text-xs sm:text-sm">
                   <Cpu className="h-4 w-4" />
-                  Arquitetura Híbrida Alternativa C
+                  Inteligência Fitossanitária & Base Embrapa
                 </h4>
                 <p className="text-xs text-slate-300">
-                  Combina uma base de conhecimento curada da Embrapa cobrindo 50+ culturas agrícolas brasileiras (respostas em 0ms) com a inteligência artificial generativa do Google Gemini (direta, sem raspagem de web ruidosa).
+                  Combina a base de conhecimento curada da Embrapa cobrindo as principais culturas agrícolas brasileiras com a inteligência artificial generativa do Google Gemini para diagnósticos fitossanitários em tempo real.
                 </p>
               </div>
 

@@ -428,7 +428,7 @@ Return EXACTLY this JSON refusing non-agricultural search:
   "pests": [
     {{
       "pestName": "Consulta Não Agrícola",
-      "description": "O Radar Agrícola IA é um sistema dedicado exclusivamente à identificação de culturas agrícolas e lavouras. O termo '{crop_name}' não foi reconhecido como uma cultura agrícola semeada.",
+      "description": "O Identificador Agrícola de Pragas é um sistema dedicado exclusivamente à identificação de culturas agrícolas e lavouras. O termo '{crop_name}' não foi reconhecido como uma cultura agrícola semeada.",
       "impactData": "Por favor, pesquise por uma cultura agrícola ou planta semeada (ex: Feijão, Batata, Milho, Tomate, Cacau, Café, Soja, Arroz).",
       "controlMethods": "Não aplicável.",
       "agriculturalImplements": "Não aplicável.",
