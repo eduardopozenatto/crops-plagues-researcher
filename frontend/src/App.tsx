@@ -261,41 +261,47 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0b0f0d] text-slate-200 font-sans selection:bg-[#2d6a4f] selection:text-white">
       
-      {/* Header Minimalista & Flat-Neumórfico */}
-      <header className="sticky top-0 z-40 w-full border-b border-white/[0.06] bg-[#0b0f0d]/85 backdrop-blur-xl">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
+      {/* Header Minimalista Adaptativo (Otimizado para Pixel 9 / Celulares Compactos) */}
+      <header className="sticky top-0 z-40 w-full border-b border-white/[0.06] bg-[#0b0f0d]/90 backdrop-blur-xl">
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-2">
+          
+          {/* Logotipo & Título */}
+          <div className="flex items-center space-x-2 min-w-0">
             <div className="h-7 w-7 rounded-lg bg-[#18241e] border border-white/[0.08] flex items-center justify-center shadow-sm flex-shrink-0">
               <Sprout className="h-4 w-4 text-[#52b788]" />
             </div>
             <div className="truncate">
-              <h1 className="text-sm font-medium tracking-tight text-slate-100 flex items-center gap-2">
-                <span>Identificador Agrícola de Pragas</span>
-                <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-[#16201b] text-slate-400 border border-white/[0.06]">
-                  v3.0 Minimalist
-                </span>
+              <h1 className="text-xs sm:text-sm font-medium tracking-tight text-slate-100 truncate">
+                <span className="sm:hidden">Identificador Agrícola</span>
+                <span className="hidden sm:inline">Identificador Agrícola de Pragas</span>
               </h1>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 flex-shrink-0">
+          {/* Ações do Topo */}
+          <div className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
             <button
               onClick={() => setIsDrawerOpen(true)}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#131b17] hover:bg-[#19241f] border border-white/[0.06] text-xs font-normal text-slate-300 transition-colors cursor-pointer"
+              aria-label="Abrir histórico de diagnósticos"
+              className="inline-flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#131b17] hover:bg-[#19241f] active:scale-[0.98] border border-white/[0.06] text-xs font-normal text-slate-300 transition-all cursor-pointer"
             >
               <History className="h-3.5 w-3.5 text-[#52b788]" />
-              <span>Histórico ({savedRecords.length})</span>
+              <span className="hidden sm:inline">Histórico</span>
+              <span className="px-1.5 py-0.2 rounded-full bg-[#1c2921] text-[#52b788] text-[10px] font-medium border border-white/[0.04]">
+                {savedRecords.length}
+              </span>
             </button>
 
             <button
               onClick={() => setActiveModal('about')}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#131b17] hover:bg-[#19241f] border border-white/[0.06] text-xs font-normal text-slate-300 transition-colors cursor-pointer"
+              aria-label="Sobre o projeto"
+              className="inline-flex items-center space-x-1 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#131b17] hover:bg-[#19241f] active:scale-[0.98] border border-white/[0.06] text-xs font-normal text-slate-300 transition-all cursor-pointer"
             >
               <Info className="h-3.5 w-3.5 text-slate-400" />
               <span className="hidden sm:inline">Sobre</span>
             </button>
 
-            <div className="hidden xs:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-[#101713] border border-white/[0.04] text-[11px] text-slate-400">
+            <div className="inline-flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-[#101713] border border-white/[0.04] text-[11px] text-slate-400">
               <span className={`h-1.5 w-1.5 rounded-full ${backendOnline ? 'bg-[#52b788]' : 'bg-amber-400'}`} />
               <span className="hidden md:inline">{backendOnline ? 'Online' : 'Offline'}</span>
             </div>
@@ -303,30 +309,30 @@ export default function App() {
         </div>
       </header>
 
-      {/* Conteúdo Principal com Conforto Editorial */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8 sm:space-y-10">
+      {/* Conteúdo Principal Mobile-First */}
+      <main className="max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-12 space-y-6 sm:space-y-10">
         
-        {/* HERO SEARCH AREA (Buscador Minimalista de Alta Precisão) */}
-        <section className="text-center max-w-2xl mx-auto space-y-4 pt-2 sm:pt-4">
+        {/* HERO SEARCH AREA */}
+        <section className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4 pt-1 sm:pt-4">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#141d18] border border-white/[0.06] text-slate-300 text-xs font-normal">
             <span className="h-1.5 w-1.5 rounded-full bg-[#52b788]" />
             <span>Diagnóstico Fitossanitário & Manejo de Lavouras</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-semibold text-slate-100 tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-4xl font-semibold text-slate-100 tracking-tight leading-tight px-1">
             Identifique pragas e doenças na sua plantação
           </h2>
-          <p className="text-sm text-slate-400 leading-relaxed max-w-lg mx-auto">
+          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-lg mx-auto px-2">
             Informe a cultura agrícola semeada para obter catálogo técnico de patógenos, sintomas específicos, protocolos MIP e equipamentos indicados.
           </p>
 
-          {/* Form de Busca Neumórfico Rebaixado */}
+          {/* Form de Busca Neumórfico Rebaixado (48px Touch Target no Mobile) */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
               handleSearch();
             }}
-            className="flex flex-col sm:flex-row gap-2.5 pt-2 max-w-xl mx-auto"
+            className="flex flex-col sm:flex-row gap-2.5 pt-1 sm:pt-2 max-w-xl mx-auto"
           >
             <div className="relative flex-1">
               <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-500" />
@@ -334,8 +340,8 @@ export default function App() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Qual cultura deseja pesquisar? (ex: Feijão, Tomate, Soja)..."
-                className="w-full pl-10 pr-12 sm:pr-16 py-3.5 neumorphic-inset rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-[#52b788]/60 transition-colors"
+                placeholder="Qual cultura deseja pesquisar? (ex: Feijão, Tomate)..."
+                className="w-full pl-10 pr-10 sm:pr-16 py-3 sm:py-3.5 neumorphic-inset rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-[#52b788]/60 transition-colors"
               />
               <span className="hidden sm:inline-flex absolute right-3 top-3 px-1.5 py-0.5 rounded bg-[#131b17] border border-white/[0.06] text-[10px] text-slate-400 font-mono items-center gap-0.5">
                 <span>Enter</span>
@@ -346,7 +352,7 @@ export default function App() {
             <button
               type="submit"
               disabled={loading || !query.trim()}
-              className="w-full sm:w-auto px-6 py-3.5 min-h-[44px] bg-[#2d6a4f] hover:bg-[#387c5d] disabled:opacity-40 disabled:hover:bg-[#2d6a4f] text-white font-medium text-sm rounded-xl transition-all duration-150 active:scale-[0.985] shadow-sm flex items-center justify-center space-x-2 flex-shrink-0 cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 sm:py-3.5 min-h-[48px] bg-[#2d6a4f] hover:bg-[#387c5d] disabled:opacity-40 disabled:hover:bg-[#2d6a4f] text-white font-medium text-sm rounded-xl transition-all duration-150 active:scale-[0.985] shadow-sm flex items-center justify-center space-x-2 flex-shrink-0 cursor-pointer"
             >
               {loading ? (
                 <span className="animate-spin text-sm">⏳</span>
@@ -358,7 +364,7 @@ export default function App() {
           </form>
 
           {/* Chips de Atalho Rápido */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1 sm:pt-2">
             <span className="text-xs text-slate-500 font-normal mr-1">Exemplos:</span>
             {popularCrops.map((c) => (
               <button
@@ -368,7 +374,7 @@ export default function App() {
                   setQuery(c.name);
                   handleSearch(c.name);
                 }}
-                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg neumorphic-pill text-xs text-slate-300 font-normal cursor-pointer"
+                className="inline-flex items-center space-x-1.5 px-2.5 sm:px-3 py-1 rounded-lg neumorphic-pill text-xs text-slate-300 font-normal cursor-pointer active:scale-[0.98]"
               >
                 <span className="text-xs">{c.icon}</span>
                 <span>{c.name}</span>
@@ -379,7 +385,7 @@ export default function App() {
 
         {/* Indicador de Carregamento Suave */}
         {loading && (
-          <div className="neumorphic-panel p-8 rounded-2xl max-w-md mx-auto text-center space-y-3 animate-smoothFade">
+          <div className="neumorphic-panel p-6 sm:p-8 rounded-2xl max-w-md mx-auto text-center space-y-3 animate-smoothFade">
             <div className="inline-flex items-center justify-center p-3 rounded-full bg-[#18241e] text-[#52b788]">
               <Sprout className="h-6 w-6 animate-spin" />
             </div>
@@ -388,47 +394,47 @@ export default function App() {
           </div>
         )}
 
-        {/* PAINEL DE RESULTADOS (HERO CARD + ABAS COM ESPAÇAMENTO EDITORIAL) */}
+        {/* PAINEL DE RESULTADOS */}
         {searchResult && !loading && (
-          <section className="space-y-6 animate-smoothFade">
+          <section className="space-y-5 sm:space-y-6 animate-smoothFade">
             
-            {/* HERO OVERVIEW CARD */}
-            <div className="neumorphic-panel rounded-2xl p-6 sm:p-7 space-y-5">
+            {/* HERO OVERVIEW CARD (Adaptado para Mobile Vertical / Desktop Horizontal) */}
+            <div className="neumorphic-panel rounded-2xl p-4 sm:p-7 space-y-4 sm:space-y-5">
               
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div className="flex items-center space-x-4">
-                  <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-[#18241e] border border-white/[0.08] flex items-center justify-center text-2xl sm:text-3xl shadow-sm flex-shrink-0">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+                <div className="flex items-center space-x-3.5 sm:space-x-4 min-w-0">
+                  <div className="h-11 w-11 sm:h-14 sm:w-14 rounded-2xl bg-[#18241e] border border-white/[0.08] flex items-center justify-center text-xl sm:text-3xl shadow-sm flex-shrink-0">
                     {getCropMeta(searchResult.cropName).icon}
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-normal px-2.5 py-0.5 rounded-full bg-[#151f1a] text-slate-300 border border-white/[0.06]">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                      <span className="text-[10px] sm:text-[11px] font-normal px-2 sm:px-2.5 py-0.5 rounded-full bg-[#151f1a] text-slate-300 border border-white/[0.06]">
                         {getCropMeta(searchResult.cropName).category}
                       </span>
                       {searchResult.isFromCache ? (
-                        <span className="inline-flex items-center space-x-1 text-[11px] text-[#52b788]">
-                          <Zap className="h-3 w-3 fill-[#52b788]" />
+                        <span className="inline-flex items-center space-x-1 text-[10px] sm:text-[11px] text-[#52b788]">
+                          <Zap className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-[#52b788]" />
                           <span>Base Embrapa (0ms)</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center space-x-1 text-[11px] text-teal-400">
-                          <Sparkles className="h-3 w-3" />
+                        <span className="inline-flex items-center space-x-1 text-[10px] sm:text-[11px] text-teal-400">
+                          <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                           <span>Síntese Gemini IA</span>
                         </span>
                       )}
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight mt-1">
+                    <h3 className="text-xl sm:text-3xl font-semibold text-white tracking-tight mt-0.5 sm:mt-1 truncate">
                       {searchResult.cropName}
                     </h3>
                   </div>
                 </div>
 
                 {/* Alternador de Visualização & Ação */}
-                <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
+                <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end pt-1 sm:pt-0">
                   <button
                     type="button"
                     onClick={() => handleSearch(searchResult.cropName, true)}
-                    className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#16201b] hover:bg-[#1c2923] border border-white/[0.06] text-xs font-normal text-slate-300 transition-colors cursor-pointer"
+                    className="inline-flex items-center space-x-1.5 px-3 py-1.5 sm:py-2 rounded-xl bg-[#16201b] hover:bg-[#1c2923] active:scale-[0.98] border border-white/[0.06] text-xs font-normal text-slate-300 transition-all cursor-pointer"
                   >
                     <RefreshCw className="h-3.5 w-3.5 text-[#52b788]" />
                     <span>Reanalisar</span>
@@ -437,7 +443,7 @@ export default function App() {
                   <div className="inline-flex rounded-xl neumorphic-inset p-1">
                     <button
                       onClick={() => setViewMode('cards')}
-                      className={`inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                      className={`inline-flex items-center space-x-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                         viewMode === 'cards'
                           ? 'bg-[#1e2a23] text-white shadow-sm border border-white/[0.08]'
                           : 'text-slate-400 hover:text-slate-200'
@@ -449,7 +455,7 @@ export default function App() {
 
                     <button
                       onClick={() => setViewMode('table')}
-                      className={`inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                      className={`inline-flex items-center space-x-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                         viewMode === 'table'
                           ? 'bg-[#1e2a23] text-white shadow-sm border border-white/[0.08]'
                           : 'text-slate-400 hover:text-slate-200'
@@ -462,144 +468,144 @@ export default function App() {
                 </div>
               </div>
 
-              {/* 3 Cartões de Síntese Fitossanitária */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-white/[0.06]">
-                <div className="p-3.5 rounded-xl bg-[#0e1411] border border-white/[0.04] flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-[#18241e] text-slate-300">
+              {/* 3 Cartões de Síntese Fitossanitária (Pilha Vertical Fluida no Mobile / Grade 3 Colunas no Desktop) */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 pt-2 sm:pt-3 border-t border-white/[0.06]">
+                <div className="p-3 rounded-xl bg-[#0e1411] border border-white/[0.04] flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-[#18241e] text-slate-300 flex-shrink-0">
                     <AlertTriangle className="h-4 w-4 text-rose-400" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <span className="text-[10px] text-slate-500 block uppercase tracking-wide font-medium">Diagnóstico</span>
-                    <span className="text-xs font-medium text-slate-200">{searchResult.pests.length} Ameaças Mapeadas</span>
+                    <span className="text-xs font-medium text-slate-200 truncate block">{searchResult.pests.length} Ameaças Mapeadas</span>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#0e1411] border border-white/[0.04] flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-[#18241e] text-slate-300">
+                <div className="p-3 rounded-xl bg-[#0e1411] border border-white/[0.04] flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-[#18241e] text-slate-300 flex-shrink-0">
                     <ShieldCheck className="h-4 w-4 text-[#52b788]" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <span className="text-[10px] text-slate-500 block uppercase tracking-wide font-medium">Manejo</span>
-                    <span className="text-xs font-medium text-slate-200">Protocolos MIP & Bioinsumos</span>
+                    <span className="text-xs font-medium text-slate-200 truncate block">Protocolos MIP & Bioinsumos</span>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#0e1411] border border-white/[0.04] flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-[#18241e] text-slate-300">
+                <div className="p-3 rounded-xl bg-[#0e1411] border border-white/[0.04] flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-[#18241e] text-slate-300 flex-shrink-0">
                     <Tractor className="h-4 w-4 text-amber-400/90" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <span className="text-[10px] text-slate-500 block uppercase tracking-wide font-medium">Equipamentos</span>
-                    <span className="text-xs font-medium text-slate-200">Pulverizadores & Tratores</span>
+                    <span className="text-xs font-medium text-slate-200 truncate block">Pulverizadores & Tratores</span>
                   </div>
                 </div>
               </div>
 
             </div>
 
-            {/* MODALIDADE 1: CARDS COM ABAS & LEITURA ESPAÇADA */}
+            {/* MODALIDADE 1: CARDS COM TRILHO TOUCH DESLIZANTE (Opção 1-A) */}
             {viewMode === 'cards' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                 {searchResult.pests.map((pest, pIdx) => {
                   const currentTab = activeTabs[pIdx] || 'description';
 
                   return (
                     <article
                       key={pIdx}
-                      className="neumorphic-card rounded-2xl p-5 sm:p-6 space-y-4 flex flex-col justify-between"
+                      className="neumorphic-card rounded-2xl p-4 sm:p-6 space-y-3 sm:space-y-4 flex flex-col justify-between"
                     >
-                      <div className="space-y-4">
+                      <div className="space-y-3 sm:space-y-4">
                         {/* Header do Card */}
-                        <div className="border-b border-white/[0.06] pb-3 space-y-1">
+                        <div className="border-b border-white/[0.06] pb-2.5 sm:pb-3 space-y-1">
                           <span className="text-[10px] font-normal tracking-wider uppercase px-2 py-0.5 rounded bg-[#131b17] text-slate-400 border border-white/[0.05]">
                             Ameaça #{pIdx + 1}
                           </span>
-                          <h4 className="text-base font-medium text-white leading-snug">
+                          <h4 className="text-sm sm:text-base font-medium text-white leading-snug">
                             {pest.pestName}
                           </h4>
                         </div>
 
-                        {/* Trilho de Abas Escovado */}
-                        <div className="flex rounded-xl neumorphic-inset p-1 text-xs gap-1">
+                        {/* Trilho de Abas Touch Deslizante (Zero Quebra de Linha em Telas Compactas) */}
+                        <div className="flex items-center gap-1.5 p-1 neumorphic-inset rounded-xl overflow-x-auto no-scrollbar scroll-smooth">
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'description')}
-                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
+                            className={`flex-shrink-0 px-3 py-1.5 sm:py-2 rounded-lg text-xs flex items-center space-x-1.5 whitespace-nowrap transition-all cursor-pointer ${
                               currentTab === 'description'
                                 ? 'bg-[#1d2721] text-slate-100 font-medium border border-white/[0.08] shadow-sm'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <Info className="h-3 w-3 flex-shrink-0 text-slate-400" />
-                            <span className="truncate">Descrição</span>
+                            <Info className="h-3 w-3 text-slate-400" />
+                            <span>Descrição</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'impact')}
-                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
+                            className={`flex-shrink-0 px-3 py-1.5 sm:py-2 rounded-lg text-xs flex items-center space-x-1.5 whitespace-nowrap transition-all cursor-pointer ${
                               currentTab === 'impact'
                                 ? 'bg-[#1d2721] text-slate-100 font-medium border border-white/[0.08] shadow-sm'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <AlertTriangle className="h-3 w-3 flex-shrink-0 text-rose-400" />
-                            <span className="truncate">Sintomas</span>
+                            <AlertTriangle className="h-3 w-3 text-rose-400" />
+                            <span>Sintomas</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'control')}
-                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
+                            className={`flex-shrink-0 px-3 py-1.5 sm:py-2 rounded-lg text-xs flex items-center space-x-1.5 whitespace-nowrap transition-all cursor-pointer ${
                               currentTab === 'control'
                                 ? 'bg-[#1d2721] text-slate-100 font-medium border border-white/[0.08] shadow-sm'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <ShieldCheck className="h-3 w-3 flex-shrink-0 text-[#52b788]" />
-                            <span className="truncate">Manejo</span>
+                            <ShieldCheck className="h-3 w-3 text-[#52b788]" />
+                            <span>Manejo</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'implements')}
-                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
+                            className={`flex-shrink-0 px-3 py-1.5 sm:py-2 rounded-lg text-xs flex items-center space-x-1.5 whitespace-nowrap transition-all cursor-pointer ${
                               currentTab === 'implements'
                                 ? 'bg-[#1d2721] text-slate-100 font-medium border border-white/[0.08] shadow-sm'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <Tractor className="h-3 w-3 flex-shrink-0 text-amber-400/90" />
-                            <span className="truncate">Tratores</span>
+                            <Tractor className="h-3 w-3 text-amber-400/90" />
+                            <span>Tratores</span>
                           </button>
                         </div>
 
                         {/* Conteúdo da Aba com Conforto Editorial */}
-                        <div className="p-4 sm:p-5 rounded-xl bg-[#0e1411] border border-white/[0.04] min-h-[120px] text-sm text-slate-300 leading-relaxed sm:leading-7 animate-smoothFade">
+                        <div className="p-3.5 sm:p-5 rounded-xl bg-[#0e1411] border border-white/[0.04] min-h-[110px] sm:min-h-[120px] text-xs sm:text-sm text-slate-300 leading-relaxed sm:leading-7 animate-smoothFade">
                           {currentTab === 'description' && (
-                            <div className="space-y-1.5">
-                              <span className="text-[11px] font-medium text-[#52b788] uppercase tracking-wider block">1. Diagnóstico & Agente Causador:</span>
+                            <div className="space-y-1 sm:space-y-1.5">
+                              <span className="text-[10px] sm:text-[11px] font-medium text-[#52b788] uppercase tracking-wider block">1. Diagnóstico & Agente Causador:</span>
                               <p>{pest.description}</p>
                             </div>
                           )}
 
                           {currentTab === 'impact' && (
-                            <div className="space-y-1.5">
-                              <span className="text-[11px] font-medium text-rose-400 uppercase tracking-wider block">2. Sintomas & Danos Econômicos:</span>
+                            <div className="space-y-1 sm:space-y-1.5">
+                              <span className="text-[10px] sm:text-[11px] font-medium text-rose-400 uppercase tracking-wider block">2. Sintomas & Danos Econômicos:</span>
                               <p>{pest.impactData}</p>
                             </div>
                           )}
 
                           {currentTab === 'control' && (
-                            <div className="space-y-1.5">
-                              <span className="text-[11px] font-medium text-[#52b788] uppercase tracking-wider block">3. Manejo Integrado de Pragas (MIP):</span>
+                            <div className="space-y-1 sm:space-y-1.5">
+                              <span className="text-[10px] sm:text-[11px] font-medium text-[#52b788] uppercase tracking-wider block">3. Manejo Integrado de Pragas (MIP):</span>
                               <p>{pest.controlMethods}</p>
                             </div>
                           )}
 
                           {currentTab === 'implements' && (
-                            <div className="space-y-1.5">
-                              <span className="text-[11px] font-medium text-amber-300/90 uppercase tracking-wider block">4. Mecanização & Implementos Recomendados:</span>
+                            <div className="space-y-1 sm:space-y-1.5">
+                              <span className="text-[10px] sm:text-[11px] font-medium text-amber-300/90 uppercase tracking-wider block">4. Mecanização & Implementos Recomendados:</span>
                               <p>{pest.agriculturalImplements}</p>
                             </div>
                           )}
@@ -607,8 +613,8 @@ export default function App() {
                       </div>
 
                       {/* Rodapé do Card */}
-                      <div className="pt-3 border-t border-white/[0.05] flex items-center justify-between text-xs text-slate-500">
-                        <span className="truncate max-w-[200px]">Fonte: {pest.sourceUrl}</span>
+                      <div className="pt-2.5 sm:pt-3 border-t border-white/[0.05] flex items-center justify-between text-[11px] sm:text-xs text-slate-500">
+                        <span className="truncate max-w-[170px] sm:max-w-[200px]">Fonte: {pest.sourceUrl}</span>
                         <a
                           href={pest.sourceUrl}
                           target="_blank"
@@ -627,27 +633,30 @@ export default function App() {
 
             {/* MODALIDADE 2: TABELA COMPARATIVA */}
             {viewMode === 'table' && (
-              <div className="neumorphic-panel rounded-2xl overflow-hidden shadow-lg">
+              <div className="neumorphic-panel rounded-2xl overflow-hidden shadow-lg space-y-1">
+                <div className="sm:hidden text-[10px] text-slate-500 text-center pt-2.5">
+                  ↔ Deslize lateralmente para visualizar todas as colunas
+                </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs min-w-[650px]">
                     <thead className="bg-[#0e1411] border-b border-white/[0.06] text-slate-300 font-medium uppercase tracking-wider text-[10px]">
                       <tr>
-                        <th className="p-4 w-1/4">Ameaça & Patógeno</th>
-                        <th className="p-4 w-1/4">Sintomas & Danos</th>
-                        <th className="p-4 w-1/4">Manejo MIP Recomendado</th>
-                        <th className="p-4 w-1/4">Implementos Agrícolas</th>
+                        <th className="p-3.5 sm:p-4 w-1/4">Ameaça & Patógeno</th>
+                        <th className="p-3.5 sm:p-4 w-1/4">Sintomas & Danos</th>
+                        <th className="p-3.5 sm:p-4 w-1/4">Manejo MIP Recomendado</th>
+                        <th className="p-3.5 sm:p-4 w-1/4">Implementos Agrícolas</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/[0.05] text-slate-300 leading-relaxed">
                       {searchResult.pests.map((pest, idx) => (
                         <tr key={idx} className="hover:bg-[#17211b] transition-colors">
-                          <td className="p-4 font-medium text-white space-y-1 align-top">
+                          <td className="p-3.5 sm:p-4 font-medium text-white space-y-1 align-top">
                             <span className="text-[10px] text-[#52b788] uppercase tracking-wider block">#{idx + 1}</span>
                             <span>{pest.pestName}</span>
                           </td>
-                          <td className="p-4 text-slate-300 align-top leading-6">{pest.impactData}</td>
-                          <td className="p-4 text-slate-300 align-top leading-6">{pest.controlMethods}</td>
-                          <td className="p-4 text-slate-300 align-top leading-6">{pest.agriculturalImplements}</td>
+                          <td className="p-3.5 sm:p-4 text-slate-300 align-top leading-6">{pest.impactData}</td>
+                          <td className="p-3.5 sm:p-4 text-slate-300 align-top leading-6">{pest.controlMethods}</td>
+                          <td className="p-3.5 sm:p-4 text-slate-300 align-top leading-6">{pest.agriculturalImplements}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -661,12 +670,12 @@ export default function App() {
 
       </main>
 
-      {/* PAINEL RETRÁTIL SLIDE-OVER (DRAWER DE HISTÓRICO) */}
+      {/* PAINEL RETRÁTIL SLIDE-OVER (DRAWER DE HISTÓRICO - 100% LARGURA EM CELULARES) */}
       {isDrawerOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden animate-smoothFade">
           <div
             onClick={() => setIsDrawerOpen(false)}
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+            className="absolute inset-0 bg-black/75 backdrop-blur-sm transition-opacity"
           />
 
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-0 sm:pl-10">
@@ -687,7 +696,7 @@ export default function App() {
               </div>
 
               {/* Corpo do Drawer */}
-              <div className="p-4 sm:p-5 flex-1 overflow-y-auto space-y-4">
+              <div className="p-3.5 sm:p-5 flex-1 overflow-y-auto space-y-3.5">
                 
                 {/* Controles de Seleção */}
                 {savedRecords.length > 0 && (
@@ -702,7 +711,7 @@ export default function App() {
                       ) : (
                         <Square className="h-3.5 w-3.5 text-slate-400" />
                       )}
-                      <span>Selecionar Todos ({getFilteredRecords().length})</span>
+                      <span>Todos ({getFilteredRecords().length})</span>
                     </button>
 
                     {selectedIds.length > 0 && (
@@ -746,7 +755,7 @@ export default function App() {
                       return (
                         <div
                           key={record.id}
-                          className={`p-3.5 rounded-xl border transition-all text-xs space-y-2 ${
+                          className={`p-3 rounded-xl border transition-all text-xs space-y-2 ${
                             isSelected
                               ? 'border-[#52b788]/60 bg-[#16221c]'
                               : 'border-white/[0.06] bg-[#121a16] hover:bg-[#16201b]'
@@ -801,7 +810,7 @@ export default function App() {
               </div>
 
               {/* Rodapé do Drawer */}
-              <div className="p-4 border-t border-white/[0.06] text-center text-[11px] text-slate-500">
+              <div className="p-3.5 sm:p-4 border-t border-white/[0.06] text-center text-[11px] text-slate-500">
                 Registros armazenados localmente no navegador.
               </div>
 
@@ -813,8 +822,8 @@ export default function App() {
       {/* MODAL: SOBRE O PROJETO */}
       {activeModal === 'about' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-smoothFade">
-          <div className="neumorphic-panel rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
+          <div className="neumorphic-panel rounded-2xl max-w-2xl w-full p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl relative max-h-[88vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3 sm:pb-4">
               <div className="flex items-center space-x-3">
                 <div className="p-2 rounded-xl bg-[#18241e] border border-white/[0.08] text-[#52b788]">
                   <BookOpen className="h-5 w-5" />
@@ -832,12 +841,12 @@ export default function App() {
               </button>
             </div>
 
-            <div className="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed sm:leading-7">
+            <div className="space-y-3.5 sm:space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed sm:leading-7">
               <p>
                 O <strong className="text-slate-100 font-medium">Identificador Agrícola de Pragas</strong> é um portal web interativo desenvolvido para identificação de ameaças biológicas e fitossanitárias em lavouras e culturas agrícolas.
               </p>
 
-              <div className="p-4 rounded-xl bg-[#0e1411] border border-white/[0.06] space-y-1.5">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-[#0e1411] border border-white/[0.06] space-y-1 sm:space-y-1.5">
                 <h4 className="font-medium text-slate-200 flex items-center gap-2 text-xs sm:text-sm">
                   <Cpu className="h-4 w-4 text-[#52b788]" />
                   Inteligência Fitossanitária & Base Embrapa
@@ -847,9 +856,9 @@ export default function App() {
                 </p>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5 sm:space-y-2">
                 <h4 className="font-medium text-white text-xs sm:text-sm">Escopo de Conteúdo Agronômico:</h4>
-                <ul className="list-disc pl-5 space-y-1.5 text-slate-400 text-xs leading-relaxed">
+                <ul className="list-disc pl-5 space-y-1 text-slate-400 text-xs leading-relaxed">
                   <li>Identificação precisa do patógeno/inseto vetor com nome popular e científico.</li>
                   <li>Sintomas e prejuízos quantitativos estimados em % na lavoura.</li>
                   <li>Métodos de Manejo Integrado de Pragas (MIP), bioinsumos e vazio sanitário.</li>
@@ -857,7 +866,7 @@ export default function App() {
                 </ul>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#141812] border border-amber-900/30 text-amber-200/90 text-xs flex items-start space-x-2.5">
+              <div className="p-3 sm:p-3.5 rounded-xl bg-[#141812] border border-amber-900/30 text-amber-200/90 text-xs flex items-start space-x-2.5">
                 <AlertTriangle className="h-4 w-4 text-amber-400 flex-shrink-0 mt-0.5" />
                 <span className="leading-relaxed">
                   <strong>Aviso Técnico:</strong> Este sistema possui caráter educativo e de apresentação científica. A aplicação de defensivos em lavouras comerciais deve seguir a orientação de um Engenheiro Agrônomo responsável com emissão de Receituário Agronômico.
@@ -865,7 +874,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-white/[0.06] flex justify-end">
+            <div className="pt-3 sm:pt-4 border-t border-white/[0.06] flex justify-end">
               <button
                 onClick={() => setActiveModal(null)}
                 className="px-5 py-2.5 bg-[#2d6a4f] hover:bg-[#387c5d] text-white font-medium text-xs rounded-xl transition-colors cursor-pointer"
@@ -880,56 +889,56 @@ export default function App() {
       {/* MODAL: DETALHES DA FICHA TÉCNICA */}
       {activeModal === 'detail' && selectedRecordDetail && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-smoothFade">
-          <div className="neumorphic-panel rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+          <div className="neumorphic-panel rounded-2xl max-w-2xl w-full p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl relative max-h-[88vh] overflow-y-auto">
             
             {/* Header da Ficha Técnica */}
-            <div className="rounded-xl p-4 bg-[#0e1411] border border-white/[0.06] flex items-center space-x-3.5">
-              <div className="h-12 w-12 rounded-xl bg-[#18241e] border border-white/[0.08] flex items-center justify-center text-2xl flex-shrink-0">
+            <div className="rounded-xl p-3.5 sm:p-4 bg-[#0e1411] border border-white/[0.06] flex items-center space-x-3.5">
+              <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-xl bg-[#18241e] border border-white/[0.08] flex items-center justify-center text-xl sm:text-2xl flex-shrink-0">
                 {getCropMeta(selectedRecordDetail.cropName).icon}
               </div>
-              <div>
+              <div className="min-w-0">
                 <span className="text-[10px] font-normal text-[#52b788] uppercase tracking-wide block">
                   {selectedRecordDetail.cropName} • {getCropMeta(selectedRecordDetail.cropName).category}
                 </span>
-                <h4 className="text-base sm:text-lg font-medium text-white">{selectedRecordDetail.pestName}</h4>
+                <h4 className="text-sm sm:text-lg font-medium text-white truncate">{selectedRecordDetail.pestName}</h4>
               </div>
             </div>
 
-            <div className="space-y-3.5 text-xs sm:text-sm">
+            <div className="space-y-3 sm:space-y-3.5 text-xs sm:text-sm">
               <div>
-                <h5 className="font-medium text-[#52b788] mb-1.5">1. Descrição & Agente Causador:</h5>
-                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-4 rounded-xl border border-white/[0.04]">
+                <h5 className="font-medium text-[#52b788] mb-1">1. Descrição & Agente Causador:</h5>
+                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-3.5 sm:p-4 rounded-xl border border-white/[0.04]">
                   {selectedRecordDetail.description}
                 </p>
               </div>
 
               <div>
-                <h5 className="font-medium text-rose-400 mb-1.5">2. Sintomas & Danos Econômicos:</h5>
-                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-4 rounded-xl border border-white/[0.04]">
+                <h5 className="font-medium text-rose-400 mb-1">2. Sintomas & Danos Econômicos:</h5>
+                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-3.5 sm:p-4 rounded-xl border border-white/[0.04]">
                   {selectedRecordDetail.impactData}
                 </p>
               </div>
 
               <div>
-                <h5 className="font-medium text-[#52b788] mb-1.5">3. Manejo Integrado de Pragas (MIP):</h5>
-                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-4 rounded-xl border border-white/[0.04]">
+                <h5 className="font-medium text-[#52b788] mb-1">3. Manejo Integrado de Pragas (MIP):</h5>
+                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-3.5 sm:p-4 rounded-xl border border-white/[0.04]">
                   {selectedRecordDetail.controlMethods}
                 </p>
               </div>
 
               <div>
-                <h5 className="font-medium text-amber-300/90 mb-1.5">4. Mecanização & Implementos Agrícolas:</h5>
-                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-4 rounded-xl border border-white/[0.04]">
+                <h5 className="font-medium text-amber-300/90 mb-1">4. Mecanização & Implementos Agrícolas:</h5>
+                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-3.5 sm:p-4 rounded-xl border border-white/[0.04]">
                   {selectedRecordDetail.agriculturalImplements}
                 </p>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-white/[0.06] flex justify-between items-center text-xs">
-              <span className="text-slate-500 truncate max-w-[200px]">Fonte: {selectedRecordDetail.sourceUrl}</span>
+            <div className="pt-3 sm:pt-4 border-t border-white/[0.06] flex justify-between items-center text-xs">
+              <span className="text-slate-500 truncate max-w-[160px] sm:max-w-[200px]">Fonte: {selectedRecordDetail.sourceUrl}</span>
               <button
                 onClick={() => setActiveModal(null)}
-                className="px-5 py-2.5 bg-[#18241e] hover:bg-[#203028] text-slate-200 font-medium rounded-xl transition-colors cursor-pointer border border-white/[0.06]"
+                className="px-4 sm:px-5 py-2 sm:py-2.5 bg-[#18241e] hover:bg-[#203028] text-slate-200 font-medium rounded-xl transition-colors cursor-pointer border border-white/[0.06]"
               >
                 Fechar
               </button>
