@@ -19,8 +19,7 @@ import {
   X,
   RefreshCw,
   Zap,
-  CornerDownLeft,
-  Layers
+  CornerDownLeft
 } from 'lucide-react';
 import { getCropMeta } from '@/lib/cropImages';
 
@@ -170,7 +169,7 @@ export default function App() {
     // 2. REQUISITA O BACKEND FASTAPI / GEMINI IA
     setLoading(true);
     setSearchResult(null);
-    setLoadingStep('Consultando Motor Fitossanitário Híbrido...');
+    setLoadingStep('Analisando cultura e compilando dados agronômicos...');
 
     try {
       const res = await fetch(`${BACKEND_URL}/api/search`, {
@@ -196,7 +195,7 @@ export default function App() {
 
     } catch (err) {
       console.error(err);
-      alert(`Não foi possível conectar ao motor do backend (${BACKEND_URL}). Verifique a URL do backend nas variáveis de ambiente.`);
+      alert(`Não foi possível conectar ao motor do backend (${BACKEND_URL}). Verifique a conexão com o servidor.`);
     } finally {
       setLoading(false);
       setLoadingStep('');
@@ -260,76 +259,74 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#090d0b] text-slate-100 font-sans selection:bg-emerald-500 selection:text-black">
-      {/* Glow Fundo sutil */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_-10%,rgba(16,185,129,0.14),rgba(0,0,0,0))] pointer-events-none z-0" />
-
-      {/* Header Minimalista Slim (100% Responsivo) */}
-      <header className="sticky top-0 z-40 w-full border-b border-emerald-950/80 bg-[#090d0b]/90 backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-700 flex items-center justify-center shadow-md shadow-emerald-950/50 flex-shrink-0">
-              <Sprout className="h-4 sm:h-5 w-4 sm:w-5 text-black stroke-[2.5]" />
+    <div className="min-h-screen bg-[#0b0f0d] text-slate-200 font-sans selection:bg-[#2d6a4f] selection:text-white">
+      
+      {/* Header Minimalista & Flat-Neumórfico */}
+      <header className="sticky top-0 z-40 w-full border-b border-white/[0.06] bg-[#0b0f0d]/85 backdrop-blur-xl">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <div className="h-7 w-7 rounded-lg bg-[#18241e] border border-white/[0.08] flex items-center justify-center shadow-sm flex-shrink-0">
+              <Sprout className="h-4 w-4 text-[#52b788]" />
             </div>
             <div className="truncate">
-              <h1 className="text-xs sm:text-sm font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
+              <h1 className="text-sm font-medium tracking-tight text-slate-100 flex items-center gap-2">
                 <span>Identificador Agrícola de Pragas</span>
-                <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
-                  v2.5.0
+                <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-[#16201b] text-slate-400 border border-white/[0.06]">
+                  v3.0 Minimalist
                 </span>
               </h1>
             </div>
           </div>
 
-          <div className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <button
               onClick={() => setIsDrawerOpen(true)}
-              className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800/80 text-xs font-medium text-slate-300 transition-colors"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#131b17] hover:bg-[#19241f] border border-white/[0.06] text-xs font-normal text-slate-300 transition-colors cursor-pointer"
             >
-              <History className="h-3.5 w-3.5 text-emerald-400" />
+              <History className="h-3.5 w-3.5 text-[#52b788]" />
               <span>Histórico ({savedRecords.length})</span>
             </button>
 
             <button
               onClick={() => setActiveModal('about')}
-              className="inline-flex items-center space-x-1 px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800/80 text-xs font-medium text-slate-300 transition-colors"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#131b17] hover:bg-[#19241f] border border-white/[0.06] text-xs font-normal text-slate-300 transition-colors cursor-pointer"
             >
-              <Info className="h-3.5 w-3.5 text-emerald-400" />
+              <Info className="h-3.5 w-3.5 text-slate-400" />
               <span className="hidden sm:inline">Sobre</span>
             </button>
 
-            <div className="hidden xs:inline-flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-emerald-950/30 border border-emerald-800/30 text-[11px] text-emerald-400 font-medium">
-              <span className={`h-2 w-2 rounded-full ${backendOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-              <span className="hidden md:inline">{backendOnline ? 'FastAPI Online' : 'Modo Offline'}</span>
+            <div className="hidden xs:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-[#101713] border border-white/[0.04] text-[11px] text-slate-400">
+              <span className={`h-1.5 w-1.5 rounded-full ${backendOnline ? 'bg-[#52b788]' : 'bg-amber-400'}`} />
+              <span className="hidden md:inline">{backendOnline ? 'Online' : 'Offline'}</span>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Conteúdo Principal Minimalista */}
-      <main className="max-w-6xl mx-auto px-3 sm:px-6 py-6 sm:py-8 relative z-10 space-y-6 sm:space-y-8">
+      {/* Conteúdo Principal com Conforto Editorial */}
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8 sm:space-y-10">
         
-        {/* HERO SEARCH AREA (Centro Focal de Busca Estilo Motor IA) */}
-        <section className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4 pt-2 sm:pt-4">
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] sm:text-xs font-medium">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Pesquisa Fitossanitária Inteligente (Embrapa & Gemini IA)</span>
+        {/* HERO SEARCH AREA (Buscador Minimalista de Alta Precisão) */}
+        <section className="text-center max-w-2xl mx-auto space-y-4 pt-2 sm:pt-4">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#141d18] border border-white/[0.06] text-slate-300 text-xs font-normal">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#52b788]" />
+            <span>Diagnóstico Fitossanitário & Manejo de Lavouras</span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-            Diagnóstico Agronômico Instantâneo
+          <h2 className="text-3xl sm:text-4xl font-semibold text-slate-100 tracking-tight leading-tight">
+            Identifique pragas e doenças na sua plantação
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed px-2">
-            Pesquise a lavoura semeada para visualizar pragas características, sintomas, manejo MIP e equipamentos recomendados.
+          <p className="text-sm text-slate-400 leading-relaxed max-w-lg mx-auto">
+            Informe a cultura agrícola semeada para obter catálogo técnico de patógenos, sintomas específicos, protocolos MIP e equipamentos indicados.
           </p>
 
-          {/* Form de Busca Responsivo */}
+          {/* Form de Busca Neumórfico Rebaixado */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
               handleSearch();
             }}
-            className="flex flex-col sm:flex-row gap-2 pt-2"
+            className="flex flex-col sm:flex-row gap-2.5 pt-2 max-w-xl mx-auto"
           >
             <div className="relative flex-1">
               <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-500" />
@@ -337,32 +334,32 @@ export default function App() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Qual cultura deseja pesquisar? (ex: Feijão, Tomate, Cacau)..."
-                className="w-full pl-10 pr-12 sm:pr-16 py-3.5 bg-slate-950/90 border border-slate-800 rounded-xl text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/80 focus:border-transparent transition-all shadow-inner"
+                placeholder="Qual cultura deseja pesquisar? (ex: Feijão, Tomate, Soja)..."
+                className="w-full pl-10 pr-12 sm:pr-16 py-3.5 neumorphic-inset rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-[#52b788]/60 transition-colors"
               />
-              <span className="hidden sm:inline-flex absolute right-3 top-3 px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-slate-500 font-mono items-center gap-0.5">
+              <span className="hidden sm:inline-flex absolute right-3 top-3 px-1.5 py-0.5 rounded bg-[#131b17] border border-white/[0.06] text-[10px] text-slate-400 font-mono items-center gap-0.5">
                 <span>Enter</span>
-                <CornerDownLeft className="h-2.5 w-2.5" />
+                <CornerDownLeft className="h-2.5 w-2.5 text-slate-500" />
               </span>
             </div>
 
             <button
               type="submit"
               disabled={loading || !query.trim()}
-              className="w-full sm:w-auto px-6 py-3.5 min-h-[44px] bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-black font-bold text-xs sm:text-sm rounded-xl transition-all shadow-lg shadow-emerald-950/60 flex items-center justify-center space-x-2 flex-shrink-0 cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3.5 min-h-[44px] bg-[#2d6a4f] hover:bg-[#387c5d] disabled:opacity-40 disabled:hover:bg-[#2d6a4f] text-white font-medium text-sm rounded-xl transition-all duration-150 active:scale-[0.985] shadow-sm flex items-center justify-center space-x-2 flex-shrink-0 cursor-pointer"
             >
               {loading ? (
-                <span className="animate-spin font-bold">⏳</span>
+                <span className="animate-spin text-sm">⏳</span>
               ) : (
-                <Search className="h-4 w-4 stroke-[2.5]" />
+                <Search className="h-4 w-4 stroke-[2.2]" />
               )}
               <span>Diagnosticar</span>
             </button>
           </form>
 
-          {/* Chips de Culturas Populares em Grade Responsiva */}
+          {/* Chips de Atalho Rápido */}
           <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2">
-            <span className="text-[11px] text-slate-500 font-medium mr-1">Atalhos rápidos:</span>
+            <span className="text-xs text-slate-500 font-normal mr-1">Exemplos:</span>
             {popularCrops.map((c) => (
               <button
                 key={c.name}
@@ -371,79 +368,79 @@ export default function App() {
                   setQuery(c.name);
                   handleSearch(c.name);
                 }}
-                className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-slate-900/70 hover:bg-emerald-950/70 border border-slate-800/80 hover:border-emerald-700/50 text-[11px] sm:text-xs font-medium text-slate-300 hover:text-emerald-300 transition-colors"
+                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg neumorphic-pill text-xs text-slate-300 font-normal cursor-pointer"
               >
-                <span>{c.icon}</span>
+                <span className="text-xs">{c.icon}</span>
                 <span>{c.name}</span>
               </button>
             ))}
           </div>
         </section>
 
-        {/* Indicator de Loading */}
+        {/* Indicador de Carregamento Suave */}
         {loading && (
-          <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-emerald-500/30 text-center space-y-3 max-w-md mx-auto animate-pulse">
-            <div className="inline-flex items-center justify-center p-3 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+          <div className="neumorphic-panel p-8 rounded-2xl max-w-md mx-auto text-center space-y-3 animate-smoothFade">
+            <div className="inline-flex items-center justify-center p-3 rounded-full bg-[#18241e] text-[#52b788]">
               <Sprout className="h-6 w-6 animate-spin" />
             </div>
-            <h3 className="text-xs sm:text-sm font-bold text-white">Processando Diagnóstico Agronômico...</h3>
-            <p className="text-xs text-emerald-400 font-medium">{loadingStep}</p>
+            <h3 className="text-sm font-medium text-slate-200">Processando Análise Fitossanitária...</h3>
+            <p className="text-xs text-slate-400 font-normal">{loadingStep}</p>
           </div>
         )}
 
-        {/* PAINEL DE RESULTADOS (HERO CARD TECNOLÓGICO + MODOS DE VISÃO) */}
+        {/* PAINEL DE RESULTADOS (HERO CARD + ABAS COM ESPAÇAMENTO EDITORIAL) */}
         {searchResult && !loading && (
-          <section className="space-y-4 sm:space-y-6 animate-fadeIn">
+          <section className="space-y-6 animate-smoothFade">
             
-            {/* HERO CARD TECNOLÓGICO MINIMALISTA (Substitui o banner fotográfico) */}
-            <div className="relative rounded-2xl border border-emerald-900/40 bg-gradient-to-b from-[#0e1612] to-[#090d0b] p-5 sm:p-6 shadow-xl space-y-4">
+            {/* HERO OVERVIEW CARD */}
+            <div className="neumorphic-panel rounded-2xl p-6 sm:p-7 space-y-5">
               
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                <div className="flex items-center space-x-3.5">
-                  <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-2xl sm:text-3xl shadow-inner flex-shrink-0">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex items-center space-x-4">
+                  <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-[#18241e] border border-white/[0.08] flex items-center justify-center text-2xl sm:text-3xl shadow-sm flex-shrink-0">
                     {getCropMeta(searchResult.cropName).icon}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      <span className="text-[11px] font-normal px-2.5 py-0.5 rounded-full bg-[#151f1a] text-slate-300 border border-white/[0.06]">
                         {getCropMeta(searchResult.cropName).category}
                       </span>
                       {searchResult.isFromCache ? (
-                        <span className="inline-flex items-center space-x-1 text-[10px] font-medium text-emerald-400/90">
-                          <Zap className="h-2.5 w-2.5 fill-emerald-400" />
+                        <span className="inline-flex items-center space-x-1 text-[11px] text-[#52b788]">
+                          <Zap className="h-3 w-3 fill-[#52b788]" />
                           <span>Base Embrapa (0ms)</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center space-x-1 text-[10px] font-medium text-teal-300">
-                          <Sparkles className="h-2.5 w-2.5 text-teal-300" />
+                        <span className="inline-flex items-center space-x-1 text-[11px] text-teal-400">
+                          <Sparkles className="h-3 w-3" />
                           <span>Síntese Gemini IA</span>
                         </span>
                       )}
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-white capitalize tracking-tight mt-0.5">
+                    <h3 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight mt-1">
                       {searchResult.cropName}
                     </h3>
                   </div>
                 </div>
 
-                {/* Controles de Ação (Alternador de Modo + Atualizar IA) */}
-                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                {/* Alternador de Visualização & Ação */}
+                <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
                   <button
                     type="button"
                     onClick={() => handleSearch(searchResult.cropName, true)}
-                    className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-emerald-300 transition-all shadow-sm cursor-pointer"
+                    className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#16201b] hover:bg-[#1c2923] border border-white/[0.06] text-xs font-normal text-slate-300 transition-colors cursor-pointer"
                   >
-                    <RefreshCw className="h-3.5 w-3.5 text-emerald-400" />
-                    <span>Reanalisar via IA</span>
+                    <RefreshCw className="h-3.5 w-3.5 text-[#52b788]" />
+                    <span>Reanalisar</span>
                   </button>
 
-                  <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800">
+                  <div className="inline-flex rounded-xl neumorphic-inset p-1">
                     <button
                       onClick={() => setViewMode('cards')}
-                      className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                      className={`inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                         viewMode === 'cards'
-                          ? 'bg-emerald-500 text-black shadow-md'
-                          : 'text-slate-400 hover:text-white'
+                          ? 'bg-[#1e2a23] text-white shadow-sm border border-white/[0.08]'
+                          : 'text-slate-400 hover:text-slate-200'
                       }`}
                     >
                       <LayoutGrid className="h-3.5 w-3.5" />
@@ -452,10 +449,10 @@ export default function App() {
 
                     <button
                       onClick={() => setViewMode('table')}
-                      className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                      className={`inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                         viewMode === 'table'
-                          ? 'bg-emerald-500 text-black shadow-md'
-                          : 'text-slate-400 hover:text-white'
+                          ? 'bg-[#1e2a23] text-white shadow-sm border border-white/[0.08]'
+                          : 'text-slate-400 hover:text-slate-200'
                       }`}
                     >
                       <Table className="h-3.5 w-3.5" />
@@ -465,146 +462,144 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Badges de Resumo Agronômico */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-800/80 text-xs">
-                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/60 flex items-center space-x-2.5">
-                  <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400">
-                    <AlertTriangle className="h-4 w-4" />
+              {/* 3 Cartões de Síntese Fitossanitária */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-white/[0.06]">
+                <div className="p-3.5 rounded-xl bg-[#0e1411] border border-white/[0.04] flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-[#18241e] text-slate-300">
+                    <AlertTriangle className="h-4 w-4 text-rose-400" />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 block uppercase font-semibold">Diagnóstico</span>
-                    <span className="font-medium text-slate-200">{searchResult.pests.length} Ameaças Críticas Mapeadas</span>
+                    <span className="text-[10px] text-slate-500 block uppercase tracking-wide font-medium">Diagnóstico</span>
+                    <span className="text-xs font-medium text-slate-200">{searchResult.pests.length} Ameaças Mapeadas</span>
                   </div>
                 </div>
 
-                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/60 flex items-center space-x-2.5">
-                  <div className="p-1.5 rounded-lg bg-teal-500/10 text-teal-400">
-                    <ShieldCheck className="h-4 w-4" />
+                <div className="p-3.5 rounded-xl bg-[#0e1411] border border-white/[0.04] flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-[#18241e] text-slate-300">
+                    <ShieldCheck className="h-4 w-4 text-[#52b788]" />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 block uppercase font-semibold">Controle</span>
-                    <span className="font-medium text-slate-200">Manejo Integrado & Bioinsumos</span>
+                    <span className="text-[10px] text-slate-500 block uppercase tracking-wide font-medium">Manejo</span>
+                    <span className="text-xs font-medium text-slate-200">Protocolos MIP & Bioinsumos</span>
                   </div>
                 </div>
 
-                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/60 flex items-center space-x-2.5">
-                  <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400">
-                    <Tractor className="h-4 w-4" />
+                <div className="p-3.5 rounded-xl bg-[#0e1411] border border-white/[0.04] flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-[#18241e] text-slate-300">
+                    <Tractor className="h-4 w-4 text-amber-400/90" />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 block uppercase font-semibold">Mecanização</span>
-                    <span className="font-medium text-slate-200">Tratores, Bicos & Pulverizadores</span>
+                    <span className="text-[10px] text-slate-500 block uppercase tracking-wide font-medium">Equipamentos</span>
+                    <span className="text-xs font-medium text-slate-200">Pulverizadores & Tratores</span>
                   </div>
                 </div>
               </div>
 
             </div>
 
-            {/* MODALIDADE 1: CARDS MINIMALISTAS COM ABAS */}
+            {/* MODALIDADE 1: CARDS COM ABAS & LEITURA ESPAÇADA */}
             {viewMode === 'cards' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {searchResult.pests.map((pest, pIdx) => {
                   const currentTab = activeTabs[pIdx] || 'description';
 
                   return (
                     <article
                       key={pIdx}
-                      className="glass-panel rounded-2xl border border-emerald-950/80 p-4 sm:p-5 space-y-3 hover:border-emerald-800/60 transition-all flex flex-col justify-between"
+                      className="neumorphic-card rounded-2xl p-5 sm:p-6 space-y-4 flex flex-col justify-between"
                     >
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                         {/* Header do Card */}
-                        <div className="flex items-start justify-between gap-2 border-b border-slate-800/80 pb-2">
-                          <div className="space-y-0.5">
-                            <span className="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                              Praga #{pIdx + 1}
-                            </span>
-                            <h4 className="text-sm sm:text-base font-bold text-white leading-snug">
-                              {pest.pestName}
-                            </h4>
-                          </div>
+                        <div className="border-b border-white/[0.06] pb-3 space-y-1">
+                          <span className="text-[10px] font-normal tracking-wider uppercase px-2 py-0.5 rounded bg-[#131b17] text-slate-400 border border-white/[0.05]">
+                            Ameaça #{pIdx + 1}
+                          </span>
+                          <h4 className="text-base font-medium text-white leading-snug">
+                            {pest.pestName}
+                          </h4>
                         </div>
 
-                        {/* Abas Navegáveis no Topo do Card */}
-                        <div className="flex rounded-xl bg-slate-950/80 p-1 border border-slate-800 text-[10px] sm:text-[11px] font-medium gap-0.5 sm:gap-1">
+                        {/* Trilho de Abas Escovado */}
+                        <div className="flex rounded-xl neumorphic-inset p-1 text-xs gap-1">
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'description')}
-                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
+                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
                               currentTab === 'description'
-                                ? 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30'
+                                ? 'bg-[#1d2721] text-slate-100 font-medium border border-white/[0.08] shadow-sm'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <Info className="h-3 w-3 flex-shrink-0" />
+                            <Info className="h-3 w-3 flex-shrink-0 text-slate-400" />
                             <span className="truncate">Descrição</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'impact')}
-                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
+                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
                               currentTab === 'impact'
-                                ? 'bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30'
+                                ? 'bg-[#1d2721] text-slate-100 font-medium border border-white/[0.08] shadow-sm'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <AlertTriangle className="h-3 w-3 flex-shrink-0" />
+                            <AlertTriangle className="h-3 w-3 flex-shrink-0 text-rose-400" />
                             <span className="truncate">Sintomas</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'control')}
-                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
+                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
                               currentTab === 'control'
-                                ? 'bg-teal-500/20 text-teal-300 font-bold border border-teal-500/30'
+                                ? 'bg-[#1d2721] text-slate-100 font-medium border border-white/[0.08] shadow-sm'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <ShieldCheck className="h-3 w-3 flex-shrink-0" />
-                            <span className="truncate">MIP</span>
+                            <ShieldCheck className="h-3 w-3 flex-shrink-0 text-[#52b788]" />
+                            <span className="truncate">Manejo</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setCardTab(pIdx, 'implements')}
-                            className={`flex-1 py-1.5 px-1 sm:px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
+                            className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-center flex items-center justify-center space-x-1 truncate cursor-pointer ${
                               currentTab === 'implements'
-                                ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30'
+                                ? 'bg-[#1d2721] text-slate-100 font-medium border border-white/[0.08] shadow-sm'
                                 : 'text-slate-400 hover:text-slate-200'
                             }`}
                           >
-                            <Tractor className="h-3 w-3 flex-shrink-0" />
+                            <Tractor className="h-3 w-3 flex-shrink-0 text-amber-400/90" />
                             <span className="truncate">Tratores</span>
                           </button>
                         </div>
 
-                        {/* Conteúdo da Aba Selecionada */}
-                        <div className="p-3 sm:p-3.5 rounded-xl bg-slate-950/50 border border-slate-800/80 min-h-[100px] sm:min-h-[110px] text-xs text-slate-300 leading-relaxed animate-fadeIn">
+                        {/* Conteúdo da Aba com Conforto Editorial */}
+                        <div className="p-4 sm:p-5 rounded-xl bg-[#0e1411] border border-white/[0.04] min-h-[120px] text-sm text-slate-300 leading-relaxed sm:leading-7 animate-smoothFade">
                           {currentTab === 'description' && (
-                            <div className="space-y-1">
-                              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">1. Descrição & Agente Causador:</span>
+                            <div className="space-y-1.5">
+                              <span className="text-[11px] font-medium text-[#52b788] uppercase tracking-wider block">1. Diagnóstico & Agente Causador:</span>
                               <p>{pest.description}</p>
                             </div>
                           )}
 
                           {currentTab === 'impact' && (
-                            <div className="space-y-1">
-                              <span className="text-[10px] font-bold text-rose-400 uppercase tracking-wider block">2. Sintomas & Prejuízos na Lavoura:</span>
+                            <div className="space-y-1.5">
+                              <span className="text-[11px] font-medium text-rose-400 uppercase tracking-wider block">2. Sintomas & Danos Econômicos:</span>
                               <p>{pest.impactData}</p>
                             </div>
                           )}
 
                           {currentTab === 'control' && (
-                            <div className="space-y-1">
-                              <span className="text-[10px] font-bold text-teal-300 uppercase tracking-wider block">3. Manejo Integrado de Pragas (MIP):</span>
+                            <div className="space-y-1.5">
+                              <span className="text-[11px] font-medium text-[#52b788] uppercase tracking-wider block">3. Manejo Integrado de Pragas (MIP):</span>
                               <p>{pest.controlMethods}</p>
                             </div>
                           )}
 
                           {currentTab === 'implements' && (
-                            <div className="space-y-1">
-                              <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider block">4. Implementos & Equipamentos Agrícolas:</span>
+                            <div className="space-y-1.5">
+                              <span className="text-[11px] font-medium text-amber-300/90 uppercase tracking-wider block">4. Mecanização & Implementos Recomendados:</span>
                               <p>{pest.agriculturalImplements}</p>
                             </div>
                           )}
@@ -612,15 +607,15 @@ export default function App() {
                       </div>
 
                       {/* Rodapé do Card */}
-                      <div className="pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] sm:text-[11px] text-slate-500">
-                        <span className="truncate max-w-[180px] sm:max-w-[200px]">Fonte: {pest.sourceUrl}</span>
+                      <div className="pt-3 border-t border-white/[0.05] flex items-center justify-between text-xs text-slate-500">
+                        <span className="truncate max-w-[200px]">Fonte: {pest.sourceUrl}</span>
                         <a
                           href={pest.sourceUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center space-x-1 text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
+                          className="inline-flex items-center space-x-1 text-[#52b788] hover:text-[#74c69d] font-normal transition-colors"
                         >
-                          <span>Fonte</span>
+                          <span>Acessar fonte</span>
                           <ExternalLink className="h-3 w-3" />
                         </a>
                       </div>
@@ -630,29 +625,29 @@ export default function App() {
               </div>
             )}
 
-            {/* MODALIDADE 2: TABELA COMPARATIVA PANORÂMICA */}
+            {/* MODALIDADE 2: TABELA COMPARATIVA */}
             {viewMode === 'table' && (
-              <div className="glass-panel rounded-2xl border border-emerald-950/80 overflow-hidden shadow-xl">
+              <div className="neumorphic-panel rounded-2xl overflow-hidden shadow-lg">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs min-w-[600px]">
-                    <thead className="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold uppercase tracking-wider text-[10px]">
+                  <table className="w-full text-left text-xs min-w-[650px]">
+                    <thead className="bg-[#0e1411] border-b border-white/[0.06] text-slate-300 font-medium uppercase tracking-wider text-[10px]">
                       <tr>
-                        <th className="p-3.5 w-1/4">Ameaça & Patógeno</th>
-                        <th className="p-3.5 w-1/4">Sintomas & Danos</th>
-                        <th className="p-3.5 w-1/4">Manejo MIP Recomendado</th>
-                        <th className="p-3.5 w-1/4">Implementos Agrícolas</th>
+                        <th className="p-4 w-1/4">Ameaça & Patógeno</th>
+                        <th className="p-4 w-1/4">Sintomas & Danos</th>
+                        <th className="p-4 w-1/4">Manejo MIP Recomendado</th>
+                        <th className="p-4 w-1/4">Implementos Agrícolas</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60 text-slate-300 leading-relaxed">
+                    <tbody className="divide-y divide-white/[0.05] text-slate-300 leading-relaxed">
                       {searchResult.pests.map((pest, idx) => (
-                        <tr key={idx} className="hover:bg-slate-900/40 transition-colors">
-                          <td className="p-3.5 font-semibold text-white space-y-1 align-top">
-                            <span className="text-[10px] text-emerald-400 uppercase tracking-wider block font-bold">#{idx + 1}</span>
+                        <tr key={idx} className="hover:bg-[#17211b] transition-colors">
+                          <td className="p-4 font-medium text-white space-y-1 align-top">
+                            <span className="text-[10px] text-[#52b788] uppercase tracking-wider block">#{idx + 1}</span>
                             <span>{pest.pestName}</span>
                           </td>
-                          <td className="p-3.5 text-slate-300 align-top">{pest.impactData}</td>
-                          <td className="p-3.5 text-slate-300 align-top">{pest.controlMethods}</td>
-                          <td className="p-3.5 text-slate-300 align-top">{pest.agriculturalImplements}</td>
+                          <td className="p-4 text-slate-300 align-top leading-6">{pest.impactData}</td>
+                          <td className="p-4 text-slate-300 align-top leading-6">{pest.controlMethods}</td>
+                          <td className="p-4 text-slate-300 align-top leading-6">{pest.agriculturalImplements}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -666,55 +661,55 @@ export default function App() {
 
       </main>
 
-      {/* PAINEL RETRÁTIL SLIDE-OVER (DRAWER DE HISTÓRICO - COM ÍCONES BOTÂNICOS ELEGANTES) */}
+      {/* PAINEL RETRÁTIL SLIDE-OVER (DRAWER DE HISTÓRICO) */}
       {isDrawerOpen && (
-        <div className="fixed inset-0 z-50 overflow-hidden animate-fadeIn">
+        <div className="fixed inset-0 z-50 overflow-hidden animate-smoothFade">
           <div
             onClick={() => setIsDrawerOpen(false)}
             className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
           />
 
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-0 sm:pl-10">
-            <div className="pointer-events-auto w-screen max-w-md bg-[#090d0b] border-l border-emerald-900/40 shadow-2xl flex flex-col justify-between">
+            <div className="pointer-events-auto w-screen max-w-md bg-[#0e1411] border-l border-white/[0.08] shadow-2xl flex flex-col justify-between">
               
               {/* Header do Drawer */}
-              <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <BookOpen className="h-5 w-5 text-emerald-400" />
-                  <h3 className="text-sm sm:text-base font-bold text-white">Histórico de Pesquisas</h3>
+              <div className="p-4 sm:p-5 border-b border-white/[0.06] flex items-center justify-between">
+                <div className="flex items-center space-x-2.5">
+                  <BookOpen className="h-4 w-4 text-[#52b788]" />
+                  <h3 className="text-sm font-medium text-white">Histórico de Diagnósticos</h3>
                 </div>
                 <button
                   onClick={() => setIsDrawerOpen(false)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#1a251f] transition-colors cursor-pointer"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
 
               {/* Corpo do Drawer */}
               <div className="p-4 sm:p-5 flex-1 overflow-y-auto space-y-4">
                 
-                {/* Controles de Multisseleção */}
+                {/* Controles de Seleção */}
                 {savedRecords.length > 0 && (
-                  <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                  <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                     <button
                       type="button"
                       onClick={toggleSelectAll}
-                      className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 font-medium transition-colors cursor-pointer"
+                      className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-[#141e19] hover:bg-[#1a251f] border border-white/[0.06] text-xs text-slate-300 font-normal transition-colors cursor-pointer"
                     >
                       {selectedIds.length === getFilteredRecords().length ? (
-                        <CheckSquare className="h-3.5 w-3.5 text-emerald-400" />
+                        <CheckSquare className="h-3.5 w-3.5 text-[#52b788]" />
                       ) : (
                         <Square className="h-3.5 w-3.5 text-slate-400" />
                       )}
-                      <span>Todos ({getFilteredRecords().length})</span>
+                      <span>Selecionar Todos ({getFilteredRecords().length})</span>
                     </button>
 
                     {selectedIds.length > 0 && (
                       <button
                         type="button"
                         onClick={deleteSelectedRecords}
-                        className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/30 text-xs text-rose-300 font-semibold transition-colors cursor-pointer"
+                        className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/25 text-xs text-rose-300 font-normal transition-colors cursor-pointer"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                         <span>Excluir ({selectedIds.length})</span>
@@ -731,42 +726,42 @@ export default function App() {
                       type="text"
                       value={filterQuery}
                       onChange={(e) => setFilterQuery(e.target.value)}
-                      placeholder="Filtrar por cultura ou praga..."
-                      className="w-full pl-8 pr-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                      placeholder="Filtrar histórico..."
+                      className="w-full pl-8 pr-3 py-1.5 neumorphic-inset rounded-lg text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-[#52b788]"
                     />
                   </div>
                 )}
 
                 {/* Lista de Cards do Histórico */}
                 {getFilteredRecords().length === 0 ? (
-                  <div className="text-center py-8 text-slate-500 text-xs space-y-1">
-                    <p>Nenhum registro encontrado.</p>
-                    <p className="text-[11px]">Realize buscas no painel para guardar diagnósticos.</p>
+                  <div className="text-center py-10 text-slate-500 text-xs space-y-1">
+                    <p>Nenhum registro armazenado.</p>
+                    <p className="text-[11px] text-slate-600">Pesquise culturas no painel para guardar diagnósticos.</p>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     {getFilteredRecords().map((record) => {
                       const isSelected = selectedIds.includes(record.id);
                       const cropMeta = getCropMeta(record.cropName);
                       return (
                         <div
                           key={record.id}
-                          className={`p-3.5 rounded-xl border transition-all text-xs space-y-2 relative ${
+                          className={`p-3.5 rounded-xl border transition-all text-xs space-y-2 ${
                             isSelected
-                              ? 'border-emerald-500 bg-emerald-950/20'
-                              : 'border-slate-800/80 bg-slate-950/50 hover:border-slate-700'
+                              ? 'border-[#52b788]/60 bg-[#16221c]'
+                              : 'border-white/[0.06] bg-[#121a16] hover:bg-[#16201b]'
                           }`}
                         >
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex items-center space-x-2.5 overflow-hidden">
-                              <div className="h-9 w-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-lg flex-shrink-0">
+                              <div className="h-8 w-8 rounded-lg bg-[#1a2520] border border-white/[0.06] flex items-center justify-center text-base flex-shrink-0">
                                 {cropMeta.icon}
                               </div>
                               <div className="truncate">
-                                <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider block">
+                                <span className="text-[10px] font-normal text-[#52b788] uppercase tracking-wide block">
                                   {record.cropName} • {cropMeta.category}
                                 </span>
-                                <h5 className="text-xs font-bold text-white truncate">{record.pestName}</h5>
+                                <h5 className="text-xs font-medium text-white truncate">{record.pestName}</h5>
                               </div>
                             </div>
 
@@ -776,21 +771,21 @@ export default function App() {
                               className="text-slate-400 hover:text-white p-1 cursor-pointer"
                             >
                               {isSelected ? (
-                                <CheckSquare className="h-4 w-4 text-emerald-400" />
+                                <CheckSquare className="h-4 w-4 text-[#52b788]" />
                               ) : (
                                 <Square className="h-4 w-4 text-slate-600" />
                               )}
                             </button>
                           </div>
 
-                          <div className="pt-2 border-t border-slate-800/60 flex items-center justify-between text-[11px]">
+                          <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between text-[11px]">
                             <button
                               type="button"
                               onClick={() => {
                                 setSelectedRecordDetail(record);
                                 setActiveModal('detail');
                               }}
-                              className="text-emerald-400 hover:text-emerald-300 font-semibold cursor-pointer"
+                              className="text-[#52b788] hover:text-[#74c69d] font-normal cursor-pointer"
                             >
                               Ver Ficha Técnica
                             </button>
@@ -806,7 +801,7 @@ export default function App() {
               </div>
 
               {/* Rodapé do Drawer */}
-              <div className="p-4 border-t border-slate-800 text-center text-[11px] text-slate-500">
+              <div className="p-4 border-t border-white/[0.06] text-center text-[11px] text-slate-500">
                 Registros armazenados localmente no navegador.
               </div>
 
@@ -817,44 +812,44 @@ export default function App() {
 
       {/* MODAL: SOBRE O PROJETO */}
       {activeModal === 'about' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="glass-panel border border-emerald-800/40 rounded-2xl max-w-2xl w-full p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3 sm:pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-smoothFade">
+          <div className="neumorphic-panel rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
               <div className="flex items-center space-x-3">
-                <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-                  <BookOpen className="h-5 sm:h-6 w-5 sm:w-6" />
+                <div className="p-2 rounded-xl bg-[#18241e] border border-white/[0.08] text-[#52b788]">
+                  <BookOpen className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white">Identificador Agrícola de Pragas</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-400">Projeto de Feira de Ciências & Engenharia Fitossanitária</p>
+                  <h3 className="text-base sm:text-lg font-medium text-white">Identificador Agrícola de Pragas</h3>
+                  <p className="text-xs text-slate-400">Projeto de Feira de Ciências & Engenharia Fitossanitária</p>
                 </div>
               </div>
               <button
                 onClick={() => setActiveModal(null)}
-                className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+                className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-[#18241e] transition-colors cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            <div className="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <div className="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed sm:leading-7">
               <p>
-                O <strong className="text-emerald-400">Identificador Agrícola de Pragas</strong> é um portal web interativo desenvolvido para identificação de ameaças biológicas e fitossanitárias em lavouras e culturas agrícolas.
+                O <strong className="text-slate-100 font-medium">Identificador Agrícola de Pragas</strong> é um portal web interativo desenvolvido para identificação de ameaças biológicas e fitossanitárias em lavouras e culturas agrícolas.
               </p>
 
-              <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/40 space-y-2">
-                <h4 className="font-bold text-emerald-300 flex items-center gap-2 text-xs sm:text-sm">
-                  <Cpu className="h-4 w-4" />
+              <div className="p-4 rounded-xl bg-[#0e1411] border border-white/[0.06] space-y-1.5">
+                <h4 className="font-medium text-slate-200 flex items-center gap-2 text-xs sm:text-sm">
+                  <Cpu className="h-4 w-4 text-[#52b788]" />
                   Inteligência Fitossanitária & Base Embrapa
                 </h4>
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-slate-400 leading-relaxed">
                   Combina a base de conhecimento curada da Embrapa cobrindo as principais culturas agrícolas brasileiras com a inteligência artificial generativa do Google Gemini para diagnósticos fitossanitários em tempo real.
                 </p>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-bold text-white text-xs sm:text-sm">Escopo de Conteúdo Agronômico:</h4>
-                <ul className="list-disc pl-5 space-y-1 text-slate-400 text-xs">
+                <h4 className="font-medium text-white text-xs sm:text-sm">Escopo de Conteúdo Agronômico:</h4>
+                <ul className="list-disc pl-5 space-y-1.5 text-slate-400 text-xs leading-relaxed">
                   <li>Identificação precisa do patógeno/inseto vetor com nome popular e científico.</li>
                   <li>Sintomas e prejuízos quantitativos estimados em % na lavoura.</li>
                   <li>Métodos de Manejo Integrado de Pragas (MIP), bioinsumos e vazio sanitário.</li>
@@ -862,18 +857,18 @@ export default function App() {
                 </ul>
               </div>
 
-              <div className="p-3 rounded-xl bg-amber-950/30 border border-amber-800/30 text-amber-300 text-xs flex items-start space-x-2">
-                <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                <span>
+              <div className="p-3.5 rounded-xl bg-[#141812] border border-amber-900/30 text-amber-200/90 text-xs flex items-start space-x-2.5">
+                <AlertTriangle className="h-4 w-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                <span className="leading-relaxed">
                   <strong>Aviso Técnico:</strong> Este sistema possui caráter educativo e de apresentação científica. A aplicação de defensivos em lavouras comerciais deve seguir a orientação de um Engenheiro Agrônomo responsável com emissão de Receituário Agronômico.
                 </span>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-800 flex justify-end">
+            <div className="pt-4 border-t border-white/[0.06] flex justify-end">
               <button
                 onClick={() => setActiveModal(null)}
-                className="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs rounded-xl transition-colors cursor-pointer"
+                className="px-5 py-2.5 bg-[#2d6a4f] hover:bg-[#387c5d] text-white font-medium text-xs rounded-xl transition-colors cursor-pointer"
               >
                 Entendido
               </button>
@@ -882,61 +877,61 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL: DETALHES DA FICHA TÉCNICA (HEADER TECNOLÓGICO LIMPO) */}
+      {/* MODAL: DETALHES DA FICHA TÉCNICA */}
       {activeModal === 'detail' && selectedRecordDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="glass-panel border border-emerald-800/40 rounded-2xl max-w-2xl w-full p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-smoothFade">
+          <div className="neumorphic-panel rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             
             {/* Header da Ficha Técnica */}
-            <div className="rounded-xl p-4 bg-gradient-to-r from-emerald-950/40 to-slate-900 border border-emerald-800/40 flex items-center space-x-3.5 mb-2 sm:mb-4">
-              <div className="h-12 w-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-2xl flex-shrink-0">
+            <div className="rounded-xl p-4 bg-[#0e1411] border border-white/[0.06] flex items-center space-x-3.5">
+              <div className="h-12 w-12 rounded-xl bg-[#18241e] border border-white/[0.08] flex items-center justify-center text-2xl flex-shrink-0">
                 {getCropMeta(selectedRecordDetail.cropName).icon}
               </div>
               <div>
-                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
+                <span className="text-[10px] font-normal text-[#52b788] uppercase tracking-wide block">
                   {selectedRecordDetail.cropName} • {getCropMeta(selectedRecordDetail.cropName).category}
                 </span>
-                <h4 className="text-base sm:text-lg font-bold text-white">{selectedRecordDetail.pestName}</h4>
+                <h4 className="text-base sm:text-lg font-medium text-white">{selectedRecordDetail.pestName}</h4>
               </div>
             </div>
 
-            <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm">
+            <div className="space-y-3.5 text-xs sm:text-sm">
               <div>
-                <h5 className="font-bold text-emerald-400 mb-1">1. Descrição & Biologia:</h5>
-                <p className="text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                <h5 className="font-medium text-[#52b788] mb-1.5">1. Descrição & Agente Causador:</h5>
+                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-4 rounded-xl border border-white/[0.04]">
                   {selectedRecordDetail.description}
                 </p>
               </div>
 
               <div>
-                <h5 className="font-bold text-rose-400 mb-1">2. Sintomas & Prejuízos:</h5>
-                <p className="text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                <h5 className="font-medium text-rose-400 mb-1.5">2. Sintomas & Danos Econômicos:</h5>
+                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-4 rounded-xl border border-white/[0.04]">
                   {selectedRecordDetail.impactData}
                 </p>
               </div>
 
               <div>
-                <h5 className="font-bold text-teal-300 mb-1">3. Manejo Integrado (MIP):</h5>
-                <p className="text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                <h5 className="font-medium text-[#52b788] mb-1.5">3. Manejo Integrado de Pragas (MIP):</h5>
+                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-4 rounded-xl border border-white/[0.04]">
                   {selectedRecordDetail.controlMethods}
                 </p>
               </div>
 
               <div>
-                <h5 className="font-bold text-amber-300 mb-1">4. Implementos Agrícolas:</h5>
-                <p className="text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                <h5 className="font-medium text-amber-300/90 mb-1.5">4. Mecanização & Implementos Agrícolas:</h5>
+                <p className="text-slate-300 leading-relaxed sm:leading-7 bg-[#0e1411] p-4 rounded-xl border border-white/[0.04]">
                   {selectedRecordDetail.agriculturalImplements}
                 </p>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-800 flex justify-between items-center text-xs">
+            <div className="pt-4 border-t border-white/[0.06] flex justify-between items-center text-xs">
               <span className="text-slate-500 truncate max-w-[200px]">Fonte: {selectedRecordDetail.sourceUrl}</span>
               <button
                 onClick={() => setActiveModal(null)}
-                className="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors cursor-pointer"
+                className="px-5 py-2.5 bg-[#18241e] hover:bg-[#203028] text-slate-200 font-medium rounded-xl transition-colors cursor-pointer border border-white/[0.06]"
               >
-                Fechar Ficha
+                Fechar
               </button>
             </div>
           </div>
